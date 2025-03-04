@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f7f3ef;
+  --foreground: #17191b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@font-face {
+  font-family: "TT Hoves Pro Trial";
+  src: url("/fonts/TT-Hoves-Pro-Trial-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves Pro Trial";
+  src: url("/fonts/TT-Hoves-Pro-Trial-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves Pro Trial";
+  src: url("/fonts/TT-Hoves-Pro-Trial-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Hoves Pro Trial";
+  src: url("/fonts/TT-Hoves-Pro-Trial-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+html {
+  font-family: "TT Hoves Pro Trial";
+  -ms-overflow-style: none; /* Hide scrollbar in IE & Edge */
+  scrollbar-width: none; /* Hide scrollbar in Firefox */
+}
+
+/* Hide scrollbar for Webkit browsers (Chrome, Safari) */
+html::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  /* background-color: #ffffff; */
+  scrollbar-width: none;
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+  -ms-scroll-chaining: none;
+}
+
+.content {
+  position: relative;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.content.menu-open {
+  @apply opacity-50 translate-x-[-17%] scale-100;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
