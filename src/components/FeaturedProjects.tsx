@@ -1,16 +1,16 @@
-import React, { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
 
 gsap.registerPlugin(ScrollTrigger);
 
-interface Project {
+type Project = {
   id: number;
   name: string;
   details: string;
   image: string;
-}
+};
 
 const projects: Project[] = [
   {
@@ -39,53 +39,114 @@ const projects: Project[] = [
   },
 ];
 
-const FeaturedProjects: React.FC = () => {
+export default function FeaturedProjects() {
+  // The inner container that will be pinned during the swipe.
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const panels = gsap.utils.toArray(".panel");
-    
-    // Set up horizontal scrolling effect
-    gsap.to(panels, {
-      xPercent: -100 * (panels.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: containerRef.current,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (panels.length - 1),
-        end: () => "+=" + (containerRef.current?.offsetWidth || 0),
+    if (!containerRef.current) return;
+  
+    let allowScroll = true;
+    let scrollTimeout = gsap.delayedCall(1, () => (allowScroll = true)).pause();
+    let currentIndex = 0;
+  
+    const swipePanels = gsap.utils.toArray<HTMLElement>(
+      containerRef.current.querySelectorAll(".panel")
+    );
+  
+    gsap.set(swipePanels, { zIndex: (i: number) => swipePanels.length - i });
+  
+    const intentObserver = ScrollTrigger.observe({
+      target: containerRef.current,
+      type: "wheel,touch",
+      tolerance: 10,
+      preventDefault: true,
+      onUp: () => {
+        if (allowScroll) gotoPanel(currentIndex - 1, false);
+      },
+      onDown: () => {
+        if (allowScroll) gotoPanel(currentIndex + 1, true);
       },
     });
+    intentObserver.disable();
+  
+    function gotoPanel(index: number, isScrollingDown: boolean) {
+      if (
+        (index === swipePanels.length && isScrollingDown) ||
+        (index === -1 && !isScrollingDown)
+      ) {
+        intentObserver.disable();
+        return;
+      }
+      allowScroll = false;
+      scrollTimeout.restart(true);
+  
+      let target = isScrollingDown ? swipePanels[currentIndex] : swipePanels[index];
+      gsap.to(target, {
+        yPercent: isScrollingDown ? -100 : 0,
+        duration: 0.75,
+        onComplete: () => {
+          allowScroll = true; // Ensures next swipe is allowed
+        },
+      });
+      currentIndex = index;
+    }
+  
+    const trigger = ScrollTrigger.create({
+      trigger: containerRef.current,
+      pin: true,
+      start: "top top",
+      end: `+=100%`,
+      onEnter: (self) => {
+        if (!(intentObserver as any).isActive) {
+          intentObserver.enable();
+          gotoPanel(currentIndex, true); // Start from the first panel
+        }
+      },
+      onEnterBack: (self) => {
+        if (!(intentObserver as any).isActive) {
+          intentObserver.enable();
+          gotoPanel(currentIndex, false); // Start from the first panel if scrolling back up
+        }
+      },
+      onLeave: () => {
+        intentObserver.disable();
+      },
+      onLeaveBack: () => {
+        // Disable intentObserver when section leaves back
+        intentObserver.disable();
+      },
+    });
+  
+    // // **NEW: Ensure Swipe Works Immediately if Already in View**
+    if (ScrollTrigger.isInViewport(containerRef.current as Element)) {
+      intentObserver.enable();
+    }
+  
+    return () => {
+      trigger.kill();
+      intentObserver.kill();
+    };
   }, []);
 
   return (
-    <section className="mt-[14vw]">
-      <h2 className="tracking-[-0.07em] not-italic text-[22vw] font-medium leading-none text-center select-none pb-[10vw]">works</h2>
-      <div ref={containerRef} className="relative h-screen overflow-hidden bg-black">
-        <div className="flex h-full">
-          {projects.map((project) => (
-            <div key={project.id} className="panel relative min-w-full h-full">
-              {/* Next.js Image with full cover */}
+    <section ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
+        {projects.map((project) => (
+          <div key={project.id} className="panel h-screen w-full absolute">
+            <div className="inset-0">
               <Image
                 src={project.image}
+                alt={project.name}
                 layout="fill"
                 objectFit="cover"
-                alt={project.name}
-                priority
               />
-              {/* Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-end p-8 bg-black bg-opacity-40">
-                <h2 className="text-white text-4xl font-bold">{project.name}</h2>
-                <p className="text-gray-300 mt-2 text-lg">{project.details}</p>
-              </div>
             </div>
-          ))}
-        </div>
-      </div>
+            <div className="content absolute bottom-10 left-10 z-10 bg-black bg-opacity-50 text-white p-4 rounded-md">
+              <h2 className="text-3xl font-bold">{project.name}</h2>
+              <p className="text-lg">{project.details}</p>
+            </div>
+          </div>
+        ))}
     </section>
-    
   );
-};
-
-export default FeaturedProjects;
+}

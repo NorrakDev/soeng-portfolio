@@ -44,25 +44,24 @@
 
 html {
   font-family: "TT Hoves Pro Trial";
-  -ms-overflow-style: none; /* Hide scrollbar in IE & Edge */
-  scrollbar-width: none; /* Hide scrollbar in Firefox */
+
 }
 
 /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
-html::-webkit-scrollbar {
+/* html::-webkit-scrollbar {
   display: none;
-}
+} */
 
 body {
   color: var(--foreground);
   background-color: var(--background);
   /* background-color: #ffffff; */
-  scrollbar-width: none;
+  /* scrollbar-width: none;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
-  -ms-scroll-chaining: none;
+  -ms-scroll-chaining: none; */
 }
 
 .content {

@@ -20,11 +20,11 @@ export default function RootLayout({
       <body className="relative">
         {/* Main Content */}
         
-        <ReactLenis root options={{ lerp: 0.05 }}>
+        {/* <ReactLenis root options={{ lerp: 0.05 }}> */}
           <Header />
           <main className="content">{children}</main>
           <Footer /> 
-        </ReactLenis>          
+        {/* </ReactLenis>           */}
       </body>
     </html>
   );
