@@ -44,15 +44,11 @@ export default function FeaturedProjects() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
-  
     let allowScroll = true;
-    let scrollTimeout = gsap.delayedCall(1, () => (allowScroll = true)).pause();
-    let currentIndex = 0;
+    let currentIndex = -1;
+    let savedScrollValue: number;
   
-    const swipePanels = gsap.utils.toArray<HTMLElement>(
-      containerRef.current.querySelectorAll(".panel")
-    );
+    const swipePanels = gsap.utils.toArray<HTMLElement>(".swipe-section .panel");
   
     gsap.set(swipePanels, { zIndex: (i: number) => swipePanels.length - i });
   
@@ -61,25 +57,34 @@ export default function FeaturedProjects() {
       type: "wheel,touch",
       tolerance: 10,
       preventDefault: true,
-      onUp: () => {
-        if (allowScroll) gotoPanel(currentIndex - 1, false);
-      },
-      onDown: () => {
-        if (allowScroll) gotoPanel(currentIndex + 1, true);
-      },
+      onUp: () => allowScroll && gotoPanel(currentIndex - 1, false),
+      onDown: () => allowScroll && gotoPanel(currentIndex + 1, true)
     });
     intentObserver.disable();
+
+    const preventScroll = ScrollTrigger.observe({
+      preventDefault: true,
+      type: "wheel,scroll",
+      allowClicks: true,
+      onEnable: self => savedScrollValue = self.scrollY(), // save the scroll position
+      onChangeY: self => self.scrollY(savedScrollValue)    // refuse to scroll
+    });
+    preventScroll.disable();
   
     function gotoPanel(index: number, isScrollingDown: boolean) {
+      allowScroll = false;
+      
       if (
         (index === swipePanels.length && isScrollingDown) ||
         (index === -1 && !isScrollingDown)
       ) {
         intentObserver.disable();
+        preventScroll.disable();
+        allowScroll = true;
+        // now make it go 1px beyond in the correct direction so that it doesn't trigger onEnter/onEnterBack.
+        preventScroll.scrollY(preventScroll.scrollY() + (index === swipePanels.length ? 1 : -1));
         return;
       }
-      allowScroll = false;
-      scrollTimeout.restart(true);
   
       let target = isScrollingDown ? swipePanels[currentIndex] : swipePanels[index];
       gsap.to(target, {
@@ -95,33 +100,26 @@ export default function FeaturedProjects() {
     const trigger = ScrollTrigger.create({
       trigger: containerRef.current,
       pin: true,
+      anticipatePin: 1,
       start: "top top",
-      end: `+=100%`,
+      end: `+=50%`,
       onEnter: (self) => {
-        if (!(intentObserver as any).isActive) {
+        if (preventScroll.isEnabled === false) {
+          self.scroll(self.start);
+          preventScroll.enable();
           intentObserver.enable();
-          gotoPanel(currentIndex, true); // Start from the first panel
+          gotoPanel(currentIndex + 1, true);
         }
       },
       onEnterBack: (self) => {
-        if (!(intentObserver as any).isActive) {
+        if (preventScroll.isEnabled === false) {
+          self.scroll(self.start);
+          preventScroll.enable();
           intentObserver.enable();
-          gotoPanel(currentIndex, false); // Start from the first panel if scrolling back up
+          gotoPanel(currentIndex - 1, false);
         }
-      },
-      onLeave: () => {
-        intentObserver.disable();
-      },
-      onLeaveBack: () => {
-        // Disable intentObserver when section leaves back
-        intentObserver.disable();
-      },
+      }
     });
-  
-    // // **NEW: Ensure Swipe Works Immediately if Already in View**
-    if (ScrollTrigger.isInViewport(containerRef.current as Element)) {
-      intentObserver.enable();
-    }
   
     return () => {
       trigger.kill();
@@ -131,22 +129,22 @@ export default function FeaturedProjects() {
 
   return (
     <section ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
-        {projects.map((project) => (
-          <div key={project.id} className="panel h-screen w-full absolute">
-            <div className="inset-0">
-              <Image
-                src={project.image}
-                alt={project.name}
-                layout="fill"
-                objectFit="cover"
-              />
-            </div>
-            <div className="content absolute bottom-10 left-10 z-10 bg-black bg-opacity-50 text-white p-4 rounded-md">
-              <h2 className="text-3xl font-bold">{project.name}</h2>
-              <p className="text-lg">{project.details}</p>
-            </div>
+      {projects.map((project) => (
+        <div key={project.id} className="panel w-full h-full absolute flex flex-col">
+          <div className="h-[60%] relative">
+            <Image
+              src={project.image}
+              alt={project.name}
+              layout="fill"
+              objectFit="cover"
+            />
           </div>
-        ))}
+          <div className="h-[40%] bg-white px-6 py-3 flex flex-col justify-start">
+            <h2 className="text-[8vh] font-bold">{project.name}</h2>
+            <p className="text-lg">{project.details}</p>
+          </div>
+        </div>
+      ))}
     </section>
   );
 }
