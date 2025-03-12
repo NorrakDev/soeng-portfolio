@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
@@ -15,27 +15,27 @@ type Project = {
 const projects: Project[] = [
   {
     id: 1,
-    name: "# Larger Than Life",
-    details: "Creative Direction, Design",
-    image: "https://picsum.photos/id/1018/1200/800",
+    name: "KB Prasac Merchant",
+    details: "ui/ui design, interaction research",
+    image: "/images/kb-prasac.png",
   },
   {
     id: 2,
-    name: "# LOEHR",
-    details: "Creative Direction, Design, Animation, Exhibition",
-    image: "https://picsum.photos/id/1027/1200/800",
+    name: "Chip Mong Bank",
+    details: "Introducing the super app for the merchant",
+    image: "/images/chipmong.png",
   },
   {
     id: 3,
-    name: "# WMF",
-    details: "Creative Direction, Design, Animation",
-    image: "https://picsum.photos/id/1043/1200/800",
+    name: "AEON Mall Plus",
+    details: "Introducing the super app for the merchant",
+    image: "/images/aeon-mall.png",
   },
   {
     id: 4,
-    name: "# lool Stereotomic Series",
+    name: "SAN SOENG Portfolio",
     details: "Creative Direction, Live Action, Animation",
-    image: "https://picsum.photos/id/1062/1200/800",
+    image: "/images/portfolio.png",
   },
 ];
 
@@ -43,7 +43,7 @@ export default function FeaturedProjects() {
   // The inner container that will be pinned during the swipe.
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let allowScroll = true;
     let currentIndex = -1;
     let savedScrollValue: number;
@@ -58,7 +58,11 @@ export default function FeaturedProjects() {
       tolerance: 10,
       preventDefault: true,
       onUp: () => allowScroll && gotoPanel(currentIndex - 1, false),
-      onDown: () => allowScroll && gotoPanel(currentIndex + 1, true)
+      onDown: () => allowScroll && gotoPanel(currentIndex + 1, true),
+      // onPress: self => {
+      //   // on touch devices like iOS, if we want to prevent scrolling, we must call preventDefault() on the touchstart (Observer doesn't do that because that would also prevent side-scrolling which is undesirable in most cases)
+      //   ScrollTrigger.isTouch && self.event.preventDefault()
+      // }
     });
     intentObserver.disable();
 
@@ -86,6 +90,33 @@ export default function FeaturedProjects() {
         return;
       }
   
+      // let target = swipePanels[index];
+      // let prevTarget = swipePanels[currentIndex];
+      
+      // let tl = gsap.timeline({
+      //   onComplete: () => {
+      //     allowScroll = true
+      //   },
+      // });
+      
+      // if (prevTarget) {
+      //   tl.to(prevTarget.querySelector(".image-wrapper img"), { yPercent: 20, opacity: 0, duration: 0.75 }, 0)
+      //     .to(prevTarget.querySelector(".text-content"), { opacity: 0, y: -20, duration: 0.5 }, 0);
+      // }
+
+      // tl.fromTo(
+      //   target.querySelector(".image-wrapper img"),
+      //   { yPercent: -20, opacity: 0 },
+      //   { yPercent: 0, opacity: 1, duration: 0.75 },
+      //   0
+      // )
+      // .fromTo(
+      //   target.querySelector(".text-content"),
+      //   { opacity: 0, y: 20 },
+      //   { opacity: 1, y: 0, duration: 0.5 },
+      //   0.3
+      // );
+
       let target = isScrollingDown ? swipePanels[currentIndex] : swipePanels[index];
       gsap.to(target, {
         yPercent: isScrollingDown ? -100 : 0,
@@ -94,6 +125,7 @@ export default function FeaturedProjects() {
           allowScroll = true; // Ensures next swipe is allowed
         },
       });
+      
       currentIndex = index;
     }
   
@@ -130,17 +162,18 @@ export default function FeaturedProjects() {
   return (
     <section ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
       {projects.map((project) => (
-        <div key={project.id} className="panel w-full h-full absolute flex flex-col">
-          <div className="h-[60%] relative">
+        <div key={project.id} className="panel w-full h-full absolute flex flex-col left-0 top-0">
+          <div className="image-wrapper h-[70%] relative">
             <Image
+              fill
               src={project.image}
               alt={project.name}
-              layout="fill"
               objectFit="cover"
+              objectPosition="center"
             />
           </div>
-          <div className="h-[40%] bg-white px-6 py-3 flex flex-col justify-start">
-            <h2 className="text-[8vh] font-bold">{project.name}</h2>
+          <div className="text-content bg-background h-[30%] px-6 py-3 flex flex-col justify-start">
+            <h2 className="text-8xl font-bold">{project.name}</h2>
             <p className="text-lg">{project.details}</p>
           </div>
         </div>
