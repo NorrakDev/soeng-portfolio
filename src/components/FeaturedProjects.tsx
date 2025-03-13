@@ -1,9 +1,10 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import gsap from "gsap";
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 type Project = {
   id: number;
@@ -43,9 +44,8 @@ export default function FeaturedProjects() {
   const containerRef = useRef<HTMLDivElement>(null);
   const mediaContainerRef = useRef<HTMLDivElement>(null);
   const titleContainerRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
+  useGSAP(() => {
     const mediaItems = gsap.utils.toArray<HTMLElement>(".media-item");
     const titleItems = gsap.utils.toArray<HTMLElement>(".title-item");
 
@@ -55,7 +55,7 @@ export default function FeaturedProjects() {
 
     const intentObserver = ScrollTrigger.observe({
       target: containerRef.current,
-      type: "wheel,touch,pointer",
+      type: "wheel,touch,scroll",
       tolerance: 10,
       preventDefault: true,
       onUp: () => allowScroll && gotoPanel(currentIndex - 1, false),
@@ -72,74 +72,69 @@ export default function FeaturedProjects() {
     });
     preventScroll.disable();
 
-    gsap.set(mediaItems, { opacity: 0, scale: 0.9 });
-    gsap.set(titleItems, { opacity: 0, y: 20 });
-
+    gsap.set(mediaItems, { yPercent: 100 });
+    gsap.set(mediaItems[0], { yPercent: 0 });
+    gsap.set(titleItems, { opacity: 0 });
+    gsap.set(titleItems[0], { opacity: 1 });
 
     function gotoPanel(index: number, isScrollingDown: boolean) {
-      allowScroll = false;
-
       if ((index === projects.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
         intentObserver.disable();
         preventScroll.disable();
-        allowScroll = true;
         preventScroll.scrollY(preventScroll.scrollY() + (index === projects.length ? 1 : -1));
+        allowScroll = true;
         return;
       }
+      allowScroll = false;
 
-      currentIndex = index;
-
-      // This is how you might animate the transitions between the panels
       const tl = gsap.timeline({
-        defaults: { duration: 0.3, ease: "expo.inOut" } , 
+        defaults: { duration: 0.8, ease: "power2.inOut" },
         onComplete: () => {
+          // After animation is complete, allow scrolling again
           allowScroll = true;
+          currentIndex = index; // Update index after animation to avoid overlapping
         }
       });
 
-      // Clear any previous animations
-      tl.clear();
-
-      // Start by fading out all the title items and media items
-      gsap.to(titleItems, { opacity: 0 });
-      gsap.to(mediaItems, { opacity: 0, scale: 0.9 });
-
-      // Add animations to the timeline for both media and titles (parallel animations)
-      tl.to(mediaItems[currentIndex], { opacity: 0, scale: 0.9, duration: 0.3 })
-        .to(mediaItems[index], { opacity: 1, scale: 1, duration: 0.3 })
-        .fromTo(titleItems[currentIndex], { opacity: 0 }, { opacity: 1 });
-    
+      // Scroll up transition
+      if (isScrollingDown) {
+        tl.to(mediaItems[currentIndex], { yPercent: -100 })
+          .to(mediaItems[index], { yPercent: 0 }, "<")
+          .to(titleItems[currentIndex], { opacity: 0 }, "<")
+          .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<");
+      } else {
+        // Scroll up transition
+        tl.to(mediaItems[currentIndex], { yPercent: 100 })
+          .to(mediaItems[index], { yPercent: 0 }, "<")
+          .to(titleItems[currentIndex], { opacity: 0 }, "<")
+          .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<");
+      }
     }
 
-    const trigger = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: containerRef.current,
       pin: true,
       anticipatePin: 1,
       start: "top top",
-      end: `+=50%`,
+      end: `+=10%`,
       onEnter: (self) => {
         if (!preventScroll.isEnabled) {
           self.scroll(self.start);
-          preventScroll.enable();
           intentObserver.enable();
+          preventScroll.enable();
           gotoPanel(currentIndex + 1, true);
         }
       },
       onEnterBack: (self) => {
         if (!preventScroll.isEnabled) {
           self.scroll(self.start);
-          preventScroll.enable();
           intentObserver.enable();
+          preventScroll.enable();
           gotoPanel(currentIndex - 1, false);
         }
       },
     });
-
-    return () => {
-      trigger.kill();
-      intentObserver.kill();
-    };
-  }, []);
+  });
 
   return (
     <section ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
@@ -147,20 +142,21 @@ export default function FeaturedProjects() {
         {projects.map((project) => (
           <div key={project.id} className="media-item absolute w-full h-screen left-0 top-0 overflow-hidden">
             <Image
+              className="object-cover"
               fill
               src={project.image}
               alt={project.name}
-              objectFit="cover"
-              objectPosition="center"
             />
           </div>
         ))}
       </div>
-      <div ref={titleContainerRef} className="title-container relative bg-background min-h-[33vh] z-[1]">
+      <div ref={titleContainerRef} className="title-container absolute bottom-0 left-0 w-full bg-background min-h-[30vh] z-[1]">
         {projects.map((project) => (
-          <div key={project.id} className="title-item left-0 top-0 absolute">
-            <h2 className="text-8xl font-bold">{project.name}</h2>
-            <p className="text-lg">{project.details}</p>
+          <div key={project.id} className="title-item left-0 top-0 absolute py-8 px-8">
+            <div className="relative flex flex-col justify-start">
+              <h2 className="text-8xl font-bold">{project.name}</h2>
+              <p className="text-lg">{project.details}</p>
+            </div>
           </div>
         ))}
       </div>

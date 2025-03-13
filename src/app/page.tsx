@@ -40,7 +40,7 @@ export default function Home() {
       </section>
 
       {/* Intro Section */}
-      <section className="px-8 mt-[14vw] mb-[14vw]">
+      {/* <section className="px-8 mt-[14vw] mb-[14vw]">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-1">
             <img
@@ -78,7 +78,7 @@ export default function Home() {
             </AnimatedContainer>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <FeaturedProjects></FeaturedProjects>
 
