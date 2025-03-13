@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useLenis } from 'lenis/react'
+// import { useLenis } from 'lenis/react'
 import BrandLogo from "../BrandLogo";
 import FlipLink from "../FlipLink";
 import FlipButton from "../FlipButton";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const lenis = useLenis();
+  // const lenis = useLenis();
 
   useEffect(() => {
     const mainElement = document.querySelector(".content");
@@ -30,16 +30,16 @@ export default function Header() {
     };
   }, [isMenuOpen]);
 
-  useEffect(() => {
-    if (isMenuOpen) {
-      lenis?.stop(); // Pause Lenis scrolling
-    } else {
-      lenis?.start(); // Resume Lenis scrolling
-    }
-    return () => {
-      lenis?.start();
-    };
-  }, [isMenuOpen, lenis]);
+  // useEffect(() => {
+  //   if (isMenuOpen) {
+  //     lenis?.stop(); // Pause Lenis scrolling
+  //   } else {
+  //     lenis?.start(); // Resume Lenis scrolling
+  //   }
+  //   return () => {
+  //     lenis?.start();
+  //   };
+  // }, [isMenuOpen, lenis]);
 
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 

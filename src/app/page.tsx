@@ -3,11 +3,21 @@
 import FeaturedProjects from "@/components/FeaturedProjects";
 import FlipLink from "@/components/FlipLink";
 import HeroSection from "@/components/HeroSection";
+import ScrollSection from "@/components/ScrollSection";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
-import WavyText from "@/components/animations/WavyText";
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 export default function Home() {
+  useEffect( () => {
+    (
+      async () => {
+          // const LocomotiveScroll = (await import('locomotive-scroll')).default
+          // const locomotiveScroll = new LocomotiveScroll();
+      }
+    )()
+  }, [])
+
   return (
     <>
       {/* Hero Section with Scroll-based Animations */}
@@ -30,7 +40,7 @@ export default function Home() {
       </section>
 
       {/* Intro Section */}
-      <section className="px-8 mt-[14vw]">
+      <section className="px-8 mt-[14vw] mb-[14vw]">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-1">
             <img
@@ -72,7 +82,10 @@ export default function Home() {
 
       <FeaturedProjects></FeaturedProjects>
 
+      <ScrollSection></ScrollSection>
+
       <section className="h-screen bg-white w-full"></section>
+
 
     </>
   );
