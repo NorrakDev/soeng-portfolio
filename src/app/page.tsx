@@ -1,5 +1,6 @@
 "use client";
 
+
 import FeaturedProjects from "@/components/FeaturedProjects";
 import FlipLink from "@/components/FlipLink";
 import HeroSection from "@/components/HeroSection";
@@ -7,6 +8,7 @@ import ScrollSection from "@/components/ScrollSection";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import AnimatedTextSection from "@/components/AnimatedTextSection";
 
 export default function Home() {
   useEffect( () => {
@@ -40,7 +42,7 @@ export default function Home() {
       </section>
 
       {/* Intro Section */}
-      {/* <section className="px-8 mt-[14vw] mb-[14vw]">
+      <section className="px-8 mt-[14vw] mb-[14vw]">
         <div className="grid grid-cols-3 gap-4">
           <div className="col-span-1">
             <img
@@ -78,11 +80,11 @@ export default function Home() {
             </AnimatedContainer>
           </div>
         </div>
-      </section> */}
+      </section>
 
       <FeaturedProjects></FeaturedProjects>
 
-      <ScrollSection></ScrollSection>
+      <AnimatedTextSection></AnimatedTextSection>
 
       <section className="h-screen bg-white w-full"></section>
 

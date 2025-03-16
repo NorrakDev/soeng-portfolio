@@ -48,6 +48,14 @@ export default function FeaturedProjects() {
   useGSAP(() => {
     const mediaItems = gsap.utils.toArray<HTMLElement>(".media-item");
     const titleItems = gsap.utils.toArray<HTMLElement>(".title-item");
+    const detailItems = gsap.utils.toArray<HTMLElement>(".detail-item");
+
+    gsap.set(mediaItems, { yPercent: 100 });
+    gsap.set(mediaItems[0], { yPercent: 0 });
+    gsap.set(titleItems, { opacity: 0 });
+    gsap.set(titleItems[0], { opacity: 1 });
+    gsap.set(detailItems, { opacity: 0, yPercent: 100 });
+    gsap.set(detailItems[0], { opacity: 1, yPercent: 0 });
 
     let allowScroll = true;
     let currentIndex = 0;
@@ -72,11 +80,6 @@ export default function FeaturedProjects() {
     });
     preventScroll.disable();
 
-    gsap.set(mediaItems, { yPercent: 100 });
-    gsap.set(mediaItems[0], { yPercent: 0 });
-    gsap.set(titleItems, { opacity: 0 });
-    gsap.set(titleItems[0], { opacity: 1 });
-
     function gotoPanel(index: number, isScrollingDown: boolean) {
       if ((index === projects.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
         intentObserver.disable();
@@ -88,7 +91,7 @@ export default function FeaturedProjects() {
       allowScroll = false;
 
       const tl = gsap.timeline({
-        defaults: { duration: 0.8, ease: "power2.inOut" },
+        defaults: { duration: .9, ease: "expo.inOut" },
         onComplete: () => {
           // After animation is complete, allow scrolling again
           allowScroll = true;
@@ -96,24 +99,21 @@ export default function FeaturedProjects() {
         }
       });
 
-      // Scroll up transition
-      if (isScrollingDown) {
-        tl.to(mediaItems[currentIndex], { yPercent: -100 })
-          .to(mediaItems[index], { yPercent: 0 }, "<")
-          .to(titleItems[currentIndex], { opacity: 0 }, "<")
-          .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<");
-      } else {
-        // Scroll up transition
-        tl.to(mediaItems[currentIndex], { yPercent: 100 })
-          .to(mediaItems[index], { yPercent: 0 }, "<")
-          .to(titleItems[currentIndex], { opacity: 0 }, "<")
-          .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<");
-      }
+      const direction = isScrollingDown ? -1 : 1;
+
+      // Scroll transitions
+      tl.to(mediaItems[currentIndex], {yPercent: 100 * direction, scale: 1.4})
+        .to(mediaItems[index], { yPercent: 0, scale: 1 }, "<")
+        .fromTo(titleItems[currentIndex], { opacity: 1 }, { opacity: 0 }, "<")
+        .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<")
+        .to(detailItems[currentIndex], { opacity: 0, yPercent: 100, delay: .2 }, "<")
+        .fromTo(detailItems[index], { opacity: 0, yPercent: 100 }, { opacity: 1, yPercent: 0, delay: .4, ease: "slow(0.7,0.7,false)" }, "<");
     }
 
     ScrollTrigger.create({
       trigger: containerRef.current,
       pin: true,
+      pinSpacing: false,
       anticipatePin: 1,
       start: "top top",
       end: `+=10%`,
@@ -137,12 +137,13 @@ export default function FeaturedProjects() {
   });
 
   return (
-    <section ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
+    <section ref={containerRef} className="swipe-section relative h-screen w-screen overflow-hidden">
+      <div ref={containerRef} className="w-full h-full relative">
       <div ref={mediaContainerRef} className="media-container flex flex-col h-auto justify-start left-0 absolute top-0 w-full z-0">
         {projects.map((project) => (
           <div key={project.id} className="media-item absolute w-full h-screen left-0 top-0 overflow-hidden">
             <Image
-              className="object-cover"
+              className="w-full h-full object-cover"
               fill
               src={project.image}
               alt={project.name}
@@ -154,12 +155,25 @@ export default function FeaturedProjects() {
         {projects.map((project) => (
           <div key={project.id} className="title-item left-0 top-0 absolute py-8 px-8">
             <div className="relative flex flex-col justify-start">
-              <h2 className="text-8xl font-bold">{project.name}</h2>
-              <p className="text-lg">{project.details}</p>
+              <h2 className="text-8xl font-medium">{project.name}</h2>
             </div>
           </div>
         ))}
       </div>
+
+      <div className="absolute bottom-0 left-0 w-full z-[2]">
+        {projects.map((project) => (
+          <p key={project.id} className="detail-item text-[#a8a8a8] left-0 bottom-0 absolute px-8 pb-4 text-xl">
+            {project.details}
+          </p>
+        ))}
+      </div>
+
+      <div className="absolute bottom-0 left-0 w-full text-center z-[2] pb-4 text-xl">
+        <span>View project</span>
+      </div>
+      </div>
+
     </section>
   );
 }
