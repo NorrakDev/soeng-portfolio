@@ -25,7 +25,7 @@ export default function AnimatedTextSection() {
       scrollTrigger: {
         trigger: aboutContainerRef.current,
         start: 'top top',
-        end: '+=00%',
+        end: '+=100%',
         scrub: 1,
         pin: true,
         pinSpacing: false,
@@ -59,14 +59,11 @@ export default function AnimatedTextSection() {
       },
       texts.length
     );
-
-     // Make it stay longer when all text is fully visible
-    tl.to({}, { duration: 2 });
   }, []);
 
   return (
-    <section className="relative w-screen h-screen overflow-hidden">
-      <div ref={aboutContainerRef} className='w-full h-full relative flex items-center justify-start'>
+    <section className="relative w-screen overflow-hidden">
+      <div ref={aboutContainerRef} className='relative h-screen w-full flex items-center justify-start'>
         <div className="relative font-semibold text-gray-800 tracking-[-0.01em] text-[4.2vw] leading-[110%]">
           {texts.map((text, index) => (
             <span

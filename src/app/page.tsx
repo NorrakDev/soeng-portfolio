@@ -1,14 +1,16 @@
 "use client";
 
 
+import AnimatedTextSection from "@/components/AnimatedTextSection";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import FlipLink from "@/components/FlipLink";
 import HeroSection from "@/components/HeroSection";
 import ScrollSection from "@/components/ScrollSection";
+import WorkHeading from "@/components/WorkHeading";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import AnimatedTextSection from "@/components/AnimatedTextSection";
+// import AnimatedTextSection from "@/components/AnimatedTextSection";
 
 export default function Home() {
   useEffect( () => {
@@ -82,13 +84,13 @@ export default function Home() {
         </div>
       </section>
 
+      <WorkHeading></WorkHeading>
+
       <FeaturedProjects></FeaturedProjects>
 
       <AnimatedTextSection></AnimatedTextSection>
 
       <section className="h-screen bg-white w-full"></section>
-
-
     </>
   );
 }
