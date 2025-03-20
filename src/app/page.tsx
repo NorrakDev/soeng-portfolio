@@ -1,7 +1,7 @@
 "use client";
 
 
-import AnimatedTextSection from "@/components/AnimatedTextSection";
+import AboutMeSection from "@/components/AboutMeSection";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import FlipLink from "@/components/FlipLink";
 import HeroSection from "@/components/HeroSection";
@@ -10,7 +10,7 @@ import WorkHeading from "@/components/WorkHeading";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-// import AnimatedTextSection from "@/components/AnimatedTextSection";
+// import AboutMeSection from "@/components/AboutMeSection";
 
 export default function Home() {
   useEffect( () => {
@@ -88,9 +88,12 @@ export default function Home() {
 
       <FeaturedProjects></FeaturedProjects>
 
-      <AnimatedTextSection></AnimatedTextSection>
+      <AboutMeSection></AboutMeSection>
 
-      <section className="h-screen bg-white w-full"></section>
+      <section className="w-full h-screen bg-red-400">
+
+        <div className="h-screen">asdasd</div>
+      </section>
     </>
   );
 }
