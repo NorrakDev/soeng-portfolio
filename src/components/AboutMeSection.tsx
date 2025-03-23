@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import {  useRef } from 'react';
 import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const texts = [
   'I design products that help you ',
@@ -18,7 +19,7 @@ export default function AboutMeSection() {
   const textRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const scrollingDivRef = useRef(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     if (!aboutContainerRef.current || !scrollingDivRef.current) return;
 
     const tl = gsap.timeline({
@@ -64,7 +65,7 @@ export default function AboutMeSection() {
 
         <div 
           ref={scrollingDivRef}
-          className="absolute bottom-[-100%] left-0 w-1/2 h-full bg-gray-400 opacity-0"
+          className="absolute bottom-[-100%] left-0 w-1/2 h-full bg-[#c0bfba] opacity-0"
         ></div>
       </div>
     </section>

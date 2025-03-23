@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 // import { useLenis } from 'lenis/react'
 import BrandLogo from "../BrandLogo";
-import FlipLink from "../FlipLink";
-import FlipButton from "../FlipButton";
+import FlipLink from "../animations/FlipLink";
+import FlipButton from "../animations/FlipButton";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

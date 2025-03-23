@@ -1,6 +1,8 @@
 "use client";
 import { motion, useInView } from 'framer-motion';
 import * as React from 'react';
+import { AnimatedContainer } from './animations/AnimatedContainer';
+import FlipLink from './animations/FlipLink';
 
 export default function HeroSection() {
   const ref = React.useRef(null);
@@ -31,18 +33,19 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <motion.div
-        className="w-full flex justify-between mt-6"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ ease: "easeInOut", duration: 1, delay: 0.5 }}
-      >
-        <p className="text-left text-3xl md:text-4xl">
-          ui/ux designer transforming your <br />
-          ideas into digital reality, crafting <br />
-          beautiful experiences.
-        </p>
-      </motion.div>
+      <div className="w-full flex justify-between items-end">
+        <AnimatedContainer
+          className="flex flex-col items-start font-light tracking-[-0.03em] text-[2.5vw] leading-[1]"
+        >
+          <span>ui/ux designer transforming your</span>
+          <span>ideas into digital reality, crafting</span>
+          <span>beautiful experiences.</span>
+        </AnimatedContainer>
+        <AnimatedContainer className="flex flex-col items-end text-2xl font-medium">
+            <FlipLink href='#'>linkedin</FlipLink>
+            <FlipLink href='#'>telegram</FlipLink>
+        </AnimatedContainer>
+      </div>
     </section>
   );
 }

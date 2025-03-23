@@ -13,8 +13,8 @@ const defaultParentVariants: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.05,
+      staggerChildren: 0.2,  // Control stagger delay to make it slower
+      delayChildren: 0.1,     // Small initial delay for all children
     },
   },
 };
@@ -22,17 +22,19 @@ const defaultParentVariants: Variants = {
 const defaultChildVariants: Variants = {
   hidden: {
     opacity: 0,
-    y: 24,
+    y: 40,  // Start below the element's original position
   },
-  visible: {
+  visible: (customDelay: number) => ({
     opacity: 1,
-    y: 0,
+    y: 0,  // Slide up to its natural position
     transition: {
       type: 'spring',
-      damping: 12,
-      stiffness: 200,
+      damping: 30,      // Slower spring damping for a smoother effect
+      stiffness: 100,   // Lower stiffness for more relaxed motion
+      delay: customDelay, // Dynamic delay for each child
+      ease: 'easeOut',  // Create a "fast to slow" effect
     },
-  },
+  }),
 };
 
 export const AnimatedContainer = ({
@@ -44,13 +46,13 @@ export const AnimatedContainer = ({
 }: AnimatedContainerProps) => {
   const controls = useAnimation();
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const isInView = useInView(ref, { once: true }); // Trigger only once when in view
 
   useEffect(() => {
     if (isInView) {
       const timer = setTimeout(() => {
         controls.start('visible');
-      }, delay * 1000);
+      }, delay * 1000); // Apply delay before animation starts
 
       return () => clearTimeout(timer);
     }
@@ -64,11 +66,20 @@ export const AnimatedContainer = ({
       variants={parentVariants}
       className={className}
     >
-      {React.Children.map(children, (child, index) => (
-        <motion.div key={index} variants={childVariants}>
-          {child}
-        </motion.div>
-      ))}
+      {React.Children.map(children, (child, index) => {
+        // Create a delay for each child based on its index
+        // Slower delay to make the effect more noticeable
+        const customDelay = Math.pow(index * 0.25, 2) * 0.2; // Exponential delay, adjustable for slow stagger
+        return (
+          <motion.div
+            key={index}
+            variants={childVariants}
+            custom={customDelay} // Pass customDelay to the variant for each child
+          >
+            {child}
+          </motion.div>
+        );
+      })}
     </motion.div>
   );
 };
