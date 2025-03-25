@@ -93,7 +93,7 @@ export default function Header() {
               <div className="grid grid-flow-col grid-rows-3 gap-4 text-lg font-medium">
                 <nav className="row-span-2 flex flex-col items-end">
                 {["linkedin", "telegram", "instagram", "cosmos"].map((social) => (
-                  <FlipLink key={social} href={`/${social}`}>{social}</FlipLink>
+                  <FlipLink hasUnderline key={social} href={`/${social}`}>{social}</FlipLink>
                   ))}
                 </nav>
                 <p className="row-span-1 leading-5 text-end">Senior Digital Designer at Pornhub & Onlyfan</p>

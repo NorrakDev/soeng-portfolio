@@ -34,7 +34,7 @@ export default function IntroSection() {
             
 
             <AnimatedContainer
-              delay={0.1}
+              delay={0.2}
               className="flex flex-col font-medium tracking-[-0.03em] text-[2.5vw] leading-[1]"
             >
               <span>specialising in:</span>

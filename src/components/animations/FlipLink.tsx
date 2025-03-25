@@ -6,9 +6,10 @@ interface FlipLinkProps extends Omit<HTMLMotionProps<"a">, "ref"> {
   href: string;
   children: string; // Ensure children is always a string
   hasBg?: boolean;
+  hasUnderline?: boolean;
 }
 
-const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = false, ...props }) => {
+const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = false, hasUnderline = false, ...props }) => {
   const duration = 0.2;
   const stagger = 0.02;
   const text = String(children); // Ensures children is treated as a string
@@ -20,7 +21,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
         whileHover="hovered"
         className={clsx(
           hasBg && "bg-white p-[.5vw] hover:bg-[#f0e9e4] hover:scale-110 hover:origin-left", // Only apply scale and origin-left when hasBg is true
-          "transform transition-transform", // Ensure transitions are applied for transform
+          "group transform transition-transform relative inline-block", // Ensure the link is inline-block to position the underline correctly
           className
         )}
 
@@ -68,8 +69,14 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
               </motion.span>
             ))}
           </div>
-        </div>
 
+          {/* Conditionally render the underline */}
+          {hasUnderline && (
+            <div
+              className="absolute bottom-0 right-0 w-full h-[2px] bg-current group-hover:w-0 transition-all duration-300 ease-in-out"
+            />
+          )}
+        </div>
       </motion.a>
     </Link>
   );

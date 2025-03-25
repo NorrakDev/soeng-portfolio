@@ -7,7 +7,7 @@ import AboutMeSection from "@/components/AboutMeSection";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import HeroSection from "@/components/HeroSection";
 import ScrollSection from "@/components/AnimatedGIFSection";
-import WorkHeading from "@/components/WorkHeading";
+// import WorkHeading from "@/components/WorkHeading";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import IntroSection from "@/components/IntroSection";
 
@@ -37,6 +37,8 @@ export default function Home() {
         </div>
       </AnimatedContainer>
 
+      {/* <WorkHeading></WorkHeading> */}
+
       {/* Intro Section */}
       <IntroSection></IntroSection>
 
@@ -46,10 +48,15 @@ export default function Home() {
 
       <AboutMeSection></AboutMeSection>
 
-      <section className="w-full h-screen bg-red-400">
-
-        <div className="h-screen">asdasd</div>
-      </section>
+      <AnimatedContainer className="px-8 mt-8">
+        <div className="w-full">
+          <img
+            src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkYmR2cHRlNnlwa3lsdXJpMDJrbnA2NGt2aDU3aWZvc3ptaGZvbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RbDKaczqWovIugyJmW/giphy.gif"
+            alt="GIF"
+            className="w-full h-auto object-contain"
+          />
+        </div>
+      </AnimatedContainer>
     </>
   );
 }

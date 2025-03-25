@@ -1,8 +1,9 @@
-// import { ReactLenis } from 'lenis/react'
+import { ReactLenis } from 'lenis/react'
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import SmoothScroll from "@/components/layout/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,14 +18,14 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className="relative">
+      <body>
         {/* Main Content */}
         
-        {/* <ReactLenis root options={{ lerp: 0.05 }}> */}
+        <SmoothScroll>
           <Header />
           <main className="content">{children}</main>
           <Footer /> 
-        {/* </ReactLenis>           */}
+        </SmoothScroll>
       </body>
     </html>
   );
