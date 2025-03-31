@@ -21,11 +21,11 @@ export default function RootLayout({
       <body>
         {/* Main Content */}
         
-        <SmoothScroll>
+        {/* <SmoothScroll> */}
           <Header />
           <main className="content">{children}</main>
           <Footer /> 
-        </SmoothScroll>
+        {/* </SmoothScroll> */}
       </body>
     </html>
   );

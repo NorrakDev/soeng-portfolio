@@ -17,7 +17,7 @@ export default function IntroSection() {
           </div>
           <div className="col-span-2 flex flex-col justify-center items-start w-full gap-x-[18vw] gap-y-[18vw]">
             <div
-              className="flex flex-col font-medium tracking-[-0.04em] text-[7vw] leading-[80%]"
+              className="flex flex-col font-medium -tracking-wider text-[7vw] leading-[80%]"
             >
               <span>senior digital</span>
               <span>designer helping</span>
@@ -27,7 +27,7 @@ export default function IntroSection() {
             </div>
 
             <AnimatedContainer>
-                <FlipLink href="/about" hasBg className="font-medium tracking-[-0.03em] text-[2.5vw] leading-[.9] flex">
+                <FlipLink href="/about" hasBg className="font-medium -tracking-wider text-[2.5vw] leading-[.9] flex">
                     about me
                 </FlipLink>
             </AnimatedContainer>

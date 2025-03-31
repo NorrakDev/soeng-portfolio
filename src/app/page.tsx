@@ -10,6 +10,8 @@ import ScrollSection from "@/components/AnimatedGIFSection";
 // import WorkHeading from "@/components/WorkHeading";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import IntroSection from "@/components/IntroSection";
+import ExpertiseSection from "@/components/ExpertiseSection";
+import HoverTextEffect from "@/components/animations/Aboutmehover";
 
 export default function Home() {
   useEffect( () => {
@@ -47,6 +49,8 @@ export default function Home() {
       <FeaturedProjects></FeaturedProjects>
 
       <AboutMeSection></AboutMeSection>
+
+      <ExpertiseSection></ExpertiseSection>
 
       <AnimatedContainer className="px-8 mt-8">
         <div className="w-full">
