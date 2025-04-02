@@ -61,6 +61,10 @@ export default function Home() {
           />
         </div>
       </AnimatedContainer>
+
+      <section className="flex flex-col justify-center items-center h-[50vh]">
+        <h2 className="text-6xl font-medium -tracking-wider">get to know me</h2>
+      </section>
     </>
   );
 }

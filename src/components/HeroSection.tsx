@@ -12,16 +12,16 @@ export default function HeroSection() {
     <section className="flex flex-col text-center px-8">
       <div
         ref={ref}
-        className="flex flex-col text-center justify-center items-center min-h-[50vh] pb-[10vw]">
-        <motion.h1
+        className="flex flex-col text-center justify-center items-center min-h-[60vh] py-[10vh]">
+        <motion.div
           initial={{ filter: 'blur(20px)', opacity: 0.5 }}
           animate={isInView ? { filter: 'blur(0px)', opacity: 1 } : {}}
           transition={{ duration: 1.2 }}
-          className="tracking-[-0.07em] not-italic text-[22vw] font-medium leading-none self-center select-none"
+          className="w-[95%]"
         >
-          san soeng
-        </motion.h1>
-        <div className="self-center mt-[-2vw] block text-center">
+          <img className="w-full" src="/images/sansoengsvg-black.svg" alt="san soeng" />
+        </motion.div>
+        <div className="self-center mt-[2vw] block text-center">
           <motion.span
             initial={{ filter: 'blur(20px)', opacity: 0.5 }}
             animate={isInView ? { filter: 'blur(0px)', opacity: 1 } : {}}
