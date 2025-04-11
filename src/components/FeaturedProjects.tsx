@@ -74,11 +74,16 @@ export default function FeaturedProjects() {
       type: "wheel,scroll",
       allowClicks: true,
       onEnable: (self) => (savedScrollValue = self.scrollY()),
-      onChangeY: (self) => self.scrollY(savedScrollValue),
+      onChangeY: (self) => {
+        if (!allowScroll) {
+          self.scrollY(savedScrollValue);
+        }
+      },
     });
     preventScroll.disable();
 
     function gotoPanel(index: number, isScrollingDown: boolean) {
+      // When reaching boundaries, disable the observers so normal scroll can resume
       if ((index === projects.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
         intentObserver.disable();
         preventScroll.disable();
@@ -131,7 +136,7 @@ export default function FeaturedProjects() {
           preventScroll.enable();
           gotoPanel(currentIndex - 1, false);
         }
-      },
+      }
     });
   });
 
