@@ -118,7 +118,7 @@ export default function FeaturedProjects() {
       pin: true,
       anticipatePin: 1,
       pinSpacing: false,
-      pinType: "fixed",
+      pinType: wrapperRef.current?.style?.transform ? "transform" : "fixed",
       start: "top top",
       end: `bottom bottom`,
       onEnter: (self) => {

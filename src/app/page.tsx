@@ -11,7 +11,7 @@ import ScrollSection from "@/components/AnimatedGIFSection";
 import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import IntroSection from "@/components/IntroSection";
 import ExpertiseSection from "@/components/ExpertiseSection";
-import HoverTextEffect from "@/components/animations/Aboutmehover";
+import HoverSwapTextLink from "@/components/animations/HoverSwapTextLink";
 
 export default function Home() {
   useEffect( () => {
@@ -63,7 +63,9 @@ export default function Home() {
       </AnimatedContainer>
 
       <section className="flex flex-col justify-center items-center h-[50vh]">
-        <h2 className="text-6xl font-medium -tracking-wider">get to know me</h2>
+        {/* <h2 className="text-6xl font-medium -tracking-wider">get to know me</h2> */}
+        <HoverSwapTextLink href="/about" text="Get to know me" hoverText="about me"></HoverSwapTextLink>
+
       </section>
     </>
   );
