@@ -46,7 +46,7 @@ export default function Header() {
   return (
     <>
       {/* Top Navigation Bar */}
-      <nav className="sticky top-0 left-0 w-full flex justify-between items-center my-4 px-8 text-xl font-medium z-[8000] mix-blend-exclusion text-white">
+      <nav className="fixed top-0 left-0 w-full flex justify-between items-center my-4 px-8 text-xl font-medium z-[8000] mix-blend-exclusion text-white">
         <BrandLogo />
         <FlipLink href="/archive">+ archive</FlipLink>
 

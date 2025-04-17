@@ -62,10 +62,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-overflow-scrolling: touch;
   -ms-scroll-chaining: none;
+  @apply -tracking-wide;
 }
 
 .content {
   position: relative;
+  @apply min-h-screen;
   /* transition: transform 0.3s ease, opacity 0.3s ease; */
 }
 

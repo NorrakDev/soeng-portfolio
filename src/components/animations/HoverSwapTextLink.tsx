@@ -88,7 +88,7 @@ export default function HoverSwapTextLink({
   }, [isHovered, text, hoverText]);
 
   return (
-    <Link href={href} className="inline-block">
+    <Link href={href} scroll={true} className="inline-block">
       <div
         className="inline-flex flex-col items-center cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
