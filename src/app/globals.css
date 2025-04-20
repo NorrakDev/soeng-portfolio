@@ -67,7 +67,6 @@ body {
 
 .content {
   position: relative;
-  @apply min-h-screen;
   /* transition: transform 0.3s ease, opacity 0.3s ease; */
 }
 

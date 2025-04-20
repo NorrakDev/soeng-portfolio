@@ -1,36 +1,39 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import HoverSwapTextLink from "@/components/animations/HoverSwapTextLink";
-import { projects } from "@/app/data/projects";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from 'react';
+import HoverSwapTextLink from '@/components/animations/HoverSwapTextLink';
+import { projects } from '@/app/data/projects';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export default function Page() {
-  useEffect(() => {
+  const containerRef = useRef(null);
+
+  useGSAP(() => {
     let getRatio = (el: HTMLElement) =>
       window.innerHeight / (window.innerHeight + el.offsetHeight);
 
-    gsap.utils.toArray<HTMLElement>(".project-item").forEach((project, i) => {
-      const bg = project.querySelector(".bg") as HTMLElement;
-      const overlay = project.querySelector(".overlay") as HTMLElement;
+    gsap.utils.toArray<HTMLElement>('.project-item').forEach((project, i) => {
+      const bg = project.querySelector('.bg') as HTMLElement;
+      const overlay = project.querySelector('.overlay') as HTMLElement;
       if (!bg) return;
 
       gsap.fromTo(
         bg,
         {
           backgroundPosition: () =>
-            i === 0 ? "50% 0px" : `50% ${-window.innerHeight * getRatio(project)}px`,
+            i === 0 ? '50% 0px' : `50% ${-window.innerHeight * getRatio(project)}px`,
         },
         {
           backgroundPosition: () => `50% ${window.innerHeight * (1 - getRatio(project))}px`,
-          ease: "none",
+          ease: 'none',
           scrollTrigger: {
             trigger: project,
-            start: i === 0 ? "top top" : "top bottom",
-            end: "bottom top",
+            start: i === 0 ? 'top top' : 'top bottom',
+            end: 'bottom top',
             scrub: true,
             invalidateOnRefresh: true,
           },
@@ -41,26 +44,26 @@ export default function Page() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: project,
-            start: "top bottom",   // when it starts entering
-            end: "bottom top",     // when it fully exits
+            start: 'top bottom',
+            end: 'bottom top',
             scrub: true,
             invalidateOnRefresh: true,
           },
         });
-  
-        tl.fromTo(overlay, { opacity: 0.5 }, { opacity: 0.1, ease: "none" })
-          .to(overlay, { opacity: 0.5, ease: "none" });
+
+        tl.fromTo(overlay, { opacity: 0.5 }, { opacity: 0.1, ease: 'none' })
+          .to(overlay, { opacity: 0.5, ease: 'none' });
       }
     });
   }, []);
 
   return (
-    <>
+    <div ref={containerRef}>
       <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8 text-center">
         works
       </h1>
 
-      {projects.map((project, i) => (
+      {projects.map((project) => (
         <div
           key={project.id}
           className="project-item relative h-screen flex items-center justify-center overflow-hidden"
@@ -83,6 +86,6 @@ export default function Page() {
           </div>
         </div>
       ))}
-    </>
+    </div>
   );
 }
