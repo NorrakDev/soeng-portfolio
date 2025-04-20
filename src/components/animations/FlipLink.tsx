@@ -15,7 +15,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
   const text = String(children); // Ensures children is treated as a string
 
   return (
-    <Link href={href} passHref legacyBehavior>
+    <Link href={href} scroll passHref legacyBehavior>
       <motion.a
         initial="initial"
         whileHover="hovered"
