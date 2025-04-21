@@ -59,7 +59,7 @@ export default function Page() {
 
   return (
     <div ref={containerRef}>
-      <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8 text-center">
+      <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8">
         works
       </h1>
 

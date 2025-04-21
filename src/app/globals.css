@@ -76,3 +76,12 @@ body {
   /* @apply opacity-50 translate-x-[-17%] scale-100;
   transition: transform 0.3s ease, opacity 0.3s ease; */
 }
+
+.word-reveal {
+  display: inline-block;
+  background-image: linear-gradient(to right, #000 0%, #d1d5db 0%);
+  background-size: 200% 100%;
+  background-position-x: 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
