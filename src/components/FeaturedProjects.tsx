@@ -158,7 +158,7 @@ export default function FeaturedProjects() {
           ))}
         </div>
 
-        <div className="title-container absolute bottom-0 left-0 w-full bg-background min-h-[30vh] z-[1]">
+        <div className="title-container absolute bottom-0 left-0 w-full bg-background min-h-[30vh] z-1">
           {projects.map((project) => (
             <div key={project.id} className="title-item left-0 top-0 absolute py-8 px-8">
               <h2 className="text-8xl font-medium">{project.name}</h2>
@@ -166,7 +166,7 @@ export default function FeaturedProjects() {
           ))}
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full z-[2]">
+        <div className="absolute bottom-0 left-0 w-full z-2">
           {projects.map((project) => (
             <p key={project.id} className="detail-item text-[#a8a8a8] left-0 bottom-0 absolute px-8 pb-4 text-xl">
               {project.details}
@@ -174,7 +174,7 @@ export default function FeaturedProjects() {
           ))}
         </div>
 
-        <div className="absolute bottom-0 left-0 w-full text-center z-[2] pb-4 text-xl">
+        <div className="absolute bottom-0 left-0 w-full text-center z-2 pb-4 text-xl">
           <span>View project</span>
         </div>
       </div>

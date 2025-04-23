@@ -73,7 +73,7 @@ export default function Page() {
             style={{ backgroundImage: `url(${project.featureImage})` }}
           ></div>
 
-          <div className="overlay absolute top-0 left-0 w-full h-full bg-foreground z-[1]" />
+          <div className="overlay absolute top-0 left-0 w-full h-full bg-foreground z-1" />
 
           <div className="z-10">
             <HoverSwapTextLink

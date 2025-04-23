@@ -35,7 +35,7 @@ export default function IntroSection() {
 
             <AnimatedContainer
               delay={0.2}
-              className="flex flex-col font-medium tracking-[-0.03em] text-[2.5vw] leading-[1]"
+              className="flex flex-col font-medium tracking-[-0.03em] text-[2.5vw] leading-none"
             >
               <span>specialising in:</span>
               <span>digital design</span>
