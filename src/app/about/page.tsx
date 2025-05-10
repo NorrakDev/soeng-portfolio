@@ -3,17 +3,52 @@
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useEffect, useRef } from 'react';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
+const imageLayout = [
+  { src: "https://picsum.photos/400/300?random=1", colStart: 1, colSpan: 3, rowStart: 1, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=2", colStart: 10, colSpan: 2, rowStart: 1, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=3", colStart: 5, colSpan: 4, rowStart: 3, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=4", colStart: 2, colSpan: 5, rowStart: 5, rowSpan: 3 },
+  { src: "https://picsum.photos/400/300?random=5", colStart: 9, colSpan: 3, rowStart: 6, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=6", colStart: 2, colSpan: 3, rowStart: 1, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=7", colStart: 8, colSpan: 4, rowStart: 2, rowSpan: 3 },
+  { src: "https://picsum.photos/400/300?random=8", colStart: 1, colSpan: 6, rowStart: 3, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=9", colStart: 7, colSpan: 3, rowStart: 6, rowSpan: 2 },
+  { src: "https://picsum.photos/400/300?random=10", colStart: 5, colSpan: 5, rowStart: 7, rowSpan: 1 },
+];
 export default function Page() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const scrollContentRef = useRef<HTMLDivElement>(null);
 
-  useGSAP(() => {
-    
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      if (!sectionRef.current || !scrollContentRef.current) return;
+
+      const scrollDistance = scrollContentRef.current.offsetHeight - window.innerHeight;
+
+      gsap.to(scrollContentRef.current, {
+        y: -scrollDistance,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () => `+=${scrollDistance}`,
+          scrub: true,
+          pin: true,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
   }, []);
+
 
   return (
     <div>
+
       <div className="h-[60vh] flex items-end">
         <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8">
           about
@@ -114,6 +149,52 @@ export default function Page() {
               visual solutions.
               </h2>
             </div>
+            <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black text-white">
+      {/* Centered Heading */}
+      <h1 className="absolute inset-0 flex items-center justify-center text-5xl font-bold pointer-events-none">
+        Scroll Heading
+      </h1>
+
+      {/* Scrollable content */}
+      <div ref={scrollContentRef} className="relative w-full">
+        {/* Spacer to ensure heading is the only thing initially visible */}
+        <div className="h-screen" />
+
+        {/* First Grid */}
+        <div className="w-full h-auto grid grid-cols-12 grid-rows-8 gap-2 px-4 py-4">
+          {imageLayout.slice(0, 5).map((img, i) => (
+            <img
+              key={i}
+              src={img.src}
+              className="object-contain w-full h-auto"
+              style={{
+                gridColumnStart: img.colStart,
+                gridColumnEnd: `span ${img.colSpan}`,
+                gridRowStart: img.rowStart,
+                gridRowEnd: `span ${img.rowSpan}`,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Second Grid */}
+        <div className="w-full h-auto grid grid-cols-12 grid-rows-8 gap-2 px-4 py-4">
+          {imageLayout.slice(5).map((img, i) => (
+            <img
+              key={i + 5}
+              src={img.src}
+              className="object-contain w-full h-auto"
+              style={{
+                gridColumnStart: img.colStart,
+                gridColumnEnd: `span ${img.colSpan}`,
+                gridRowStart: img.rowStart,
+                gridRowEnd: `span ${img.rowSpan}`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
           </div>
         </div>
       </section>
