@@ -6,9 +6,6 @@ import { useEffect } from "react";
 import AboutMeSection from "@/components/AboutMeSection";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import HeroSection from "@/components/HeroSection";
-import ScrollSection from "@/components/AnimatedGIFSection";
-// import WorkHeading from "@/components/WorkHeading";
-import { AnimatedContainer } from "@/components/animations/AnimatedContainer";
 import IntroSection from "@/components/IntroSection";
 import ExpertiseSection from "@/components/ExpertiseSection";
 import HoverSwapTextLink from "@/components/animations/HoverSwapTextLink";
@@ -29,7 +26,7 @@ export default function Home() {
       <HeroSection></HeroSection>
 
       {/* Section for GIF with a smooth animation */}
-      <AnimatedContainer className="px-8 mt-8">
+      <div className="px-8 mt-8">
         <div className="w-full">
           <img
             src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkYmR2cHRlNnlwa3lsdXJpMDJrbnA2NGt2aDU3aWZvc3ptaGZvbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RbDKaczqWovIugyJmW/giphy.gif"
@@ -37,7 +34,7 @@ export default function Home() {
             className="w-full h-auto object-contain"
           />
         </div>
-      </AnimatedContainer>
+      </div>
 
       {/* <WorkHeading></WorkHeading> */}
 
@@ -52,7 +49,7 @@ export default function Home() {
 
       <ExpertiseSection></ExpertiseSection>
 
-      <AnimatedContainer className="px-8 mt-8">
+      <div className="px-8 mt-8">
         <div className="w-full">
           <img
             src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExZWZkYmR2cHRlNnlwa3lsdXJpMDJrbnA2NGt2aDU3aWZvc3ptaGZvbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/RbDKaczqWovIugyJmW/giphy.gif"
@@ -60,7 +57,7 @@ export default function Home() {
             className="w-full h-auto object-contain"
           />
         </div>
-      </AnimatedContainer>
+      </div>
 
       <section className="flex flex-col justify-center items-center h-[50vh]">
         {/* <h2 className="text-6xl font-medium -tracking-wider">get to know me</h2> */}

@@ -1,7 +1,17 @@
 "use client";
 import * as React from 'react';
-import { AnimatedContainer } from './animations/AnimatedContainer';
 import FlipLink from './animations/FlipLink';
+import FadeInOnScroll from './animations/FadeInOnScroll';
+
+const texts = [
+  'specialising in:',
+  'digital design',
+  'branding',
+  'web experiences',
+  'webflow development',
+  'typography',
+  'art direction'
+];
 
 export default function IntroSection() {
 
@@ -26,25 +36,19 @@ export default function IntroSection() {
               <span>a meaningful way</span>
             </div>
 
-            <AnimatedContainer>
+            <div>
                 <FlipLink href="/about" hasBg className="font-medium -tracking-wider text-[2.5vw] leading-[.9] flex">
                     about me
                 </FlipLink>
-            </AnimatedContainer>
+            </div>
             
 
-            <AnimatedContainer
-              delay={0.2}
-              className="flex flex-col font-medium tracking-[-0.03em] text-[2.5vw] leading-none"
+            <FadeInOnScroll
             >
-              <span>specialising in:</span>
-              <span>digital design</span>
-              <span>branding</span>
-              <span>web experiences</span>
-              <span>webflow development</span>
-              <span>typography</span>
-              <span>art direction</span>
-            </AnimatedContainer>
+               {texts.map((text, index) => (
+                <span key={index} className="block font-medium tracking-[-0.03em] text-[2.5vw] leading-none">{text}</span>
+               ))}
+            </FadeInOnScroll>
           </div>
         </div>
       </section>

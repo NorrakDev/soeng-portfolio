@@ -4,8 +4,9 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react';
+import FadeInOnScroll from '@/components/animations/FadeInOnScroll';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
 const imageLayout = [
   { src: "https://picsum.photos/400/300?random=1", colStart: 1, colSpan: 3, rowStart: 1, rowSpan: 2 },
@@ -45,6 +46,29 @@ export default function Page() {
     return () => ctx.revert();
   }, []);
 
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const charsRef = useRef<(HTMLSpanElement | null)[]>([]);
+
+  useEffect(() => {
+    const spans = charsRef.current.filter((el): el is HTMLSpanElement => el !== null);
+    gsap.fromTo(
+      spans,
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.03,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top 90%',
+          once: true,
+        },
+      }
+    );
+  }, []);
+
 
   return (
     <div>
@@ -71,9 +95,17 @@ export default function Page() {
         </div>
         <div className="about-section w-full mt-[5vw]">
           <div className="relative">
-            <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
+            <div ref={containerRef} className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
               <h1 className="text-[30vw] font-medium -tracking-widest leading-none">
-                hello
+              {'hello'.split('').map((char, i) => (
+          <span
+            key={i}
+            ref={el => {  charsRef.current[i] = el}}
+            className="inline-block"
+          >
+            {char}
+          </span>
+        ))}
               </h1>
             </div>
             <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
@@ -90,15 +122,15 @@ export default function Page() {
               </h2>
             </div>
             <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
-              <h2 className="w-[45vw] text-[2vw] font-normal -tracking-wider leading-tight text-center">
-                with six years of experience in software development 
-                companies and creative studio, I’ve created exceptional 
-                user experiences that truly stand out. My career has 
-                spanned in-house roles, agency projects, and freelance 
-                opportunities, collaborating across diverse industries 
-                such as finance, banking, e-commerce, entertainment, 
-                education, fintech, and more...
-              </h2>
+              <FadeInOnScroll className="w-[45vw] text-[2vw] font-normal -tracking-wider leading-tight text-center">
+                <span>with six years of experience in software development</span>
+                <span>companies and creative studio, I’ve created exceptional</span> 
+                <span>user experiences that truly stand out. My career has</span>
+                <span>spanned in-house roles, agency projects, and freelance</span>
+                <span>opportunities, collaborating across diverse industries</span>
+                <span>such as finance, banking, e-commerce, entertainment,</span> 
+                <span>education, fintech, and more...</span>
+              </FadeInOnScroll>
             </div>
             <div className="min-h-screen flex flex-col justify-end items-center gap-y-60 py-[20vh]">
               <div className="flex flex-col items-center gap-y-2">
@@ -151,8 +183,8 @@ export default function Page() {
             </div>
             <section ref={sectionRef} className="relative h-screen w-full overflow-hidden bg-black text-white">
       {/* Centered Heading */}
-      <h1 className="absolute inset-0 flex items-center justify-center text-5xl font-bold pointer-events-none">
-        Scroll Heading
+      <h1 className="absolute inset-0 flex items-center justify-center text-[2.5vw] font-normal pointer-events-none">
+        with a bit of design that look like this
       </h1>
 
       {/* Scrollable content */}

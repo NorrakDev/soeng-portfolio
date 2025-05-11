@@ -34,7 +34,7 @@ export default function ExpertiseSection() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top 80%", // Trigger when 80% of the <ul> is in the viewport
-        toggleActions: "play none none none", // Restart the animation every time
+        toggleActions: "restart none none none", // Restart the animation every time
         markers: true, // Optional, helps to see trigger points while testing
       },
     });

@@ -20,7 +20,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
         initial="initial"
         whileHover="hovered"
         className={clsx(
-          hasBg && "bg-white p-[.5vw] hover:bg-[#f0e9e4] hover:scale-110 hover:origin-left", // Only apply scale and origin-left when hasBg is true
+          hasBg && "bg-background p-[.5vw] hover:bg-[#f0e9e4] hover:scale-110 hover:origin-left", // Only apply scale and origin-left when hasBg is true
           "group transform transition-transform relative inline-block", // Ensure the link is inline-block to position the underline correctly
           className
         )}
