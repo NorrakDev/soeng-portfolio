@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from "next/image";
+import RevealOnScroll from "./animations/RevealOnScroll";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -145,9 +146,9 @@ export default function FeaturedProjects() {
   return (
     <section className="relative w-full overflow-hidden">
       {/* 🔥 Heading (Stays Static) */}
-      <div className="w-full text-center py-10">
+      <RevealOnScroll type='reveal-up' className="w-full text-center py-10">
         <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%]">works</h1>
-      </div>
+      </RevealOnScroll>
 
       {/* 🔥 Wrapper (This will be pinned when scrolled into view) */}
       <div ref={wrapperRef} className="relative h-screen w-full overflow-hidden">

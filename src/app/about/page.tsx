@@ -4,7 +4,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react';
-import FadeInOnScroll from '@/components/animations/FadeInOnScroll';
+import RevealOnScroll from '@/components/animations/RevealOnScroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -122,7 +122,7 @@ export default function Page() {
               </h2>
             </div>
             <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
-              <FadeInOnScroll className="w-[45vw] text-[2vw] font-normal -tracking-wider leading-tight text-center">
+              <RevealOnScroll className="w-[45vw] text-[2vw] font-normal -tracking-wider leading-tight text-center">
                 <span>with six years of experience in software development</span>
                 <span>companies and creative studio, I’ve created exceptional</span> 
                 <span>user experiences that truly stand out. My career has</span>
@@ -130,7 +130,7 @@ export default function Page() {
                 <span>opportunities, collaborating across diverse industries</span>
                 <span>such as finance, banking, e-commerce, entertainment,</span> 
                 <span>education, fintech, and more...</span>
-              </FadeInOnScroll>
+              </RevealOnScroll>
             </div>
             <div className="min-h-screen flex flex-col justify-end items-center gap-y-60 py-[20vh]">
               <div className="flex flex-col items-center gap-y-2">

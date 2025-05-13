@@ -2,7 +2,7 @@
 import { motion, useInView } from 'framer-motion';
 import * as React from 'react';
 import FlipLink from './animations/FlipLink';
-import FadeInOnScroll from './animations/FadeInOnScroll';
+import RevealOnScroll from './animations/RevealOnScroll';
 
 export default function HeroSection() {
   const ref = React.useRef(null);
@@ -34,17 +34,17 @@ export default function HeroSection() {
       </div>
 
       <div className="w-full flex justify-between items-end">
-        <FadeInOnScroll
+        <RevealOnScroll
           className="flex flex-col items-start font-light tracking-[-0.03em] text-[2.5vw] leading-none"
         >
           <span>ui/ux designer transforming your</span>
           <span>ideas into digital reality, crafting</span>
           <span>beautiful experiences.</span>
-        </FadeInOnScroll>
-        <FadeInOnScroll className="flex flex-col items-end text-2xl font-medium">
+        </RevealOnScroll>
+        <RevealOnScroll type='flip' className="flex flex-col items-end text-2xl font-medium">
             <FlipLink href='#'>linkedin</FlipLink>
             <FlipLink href='#'>telegram</FlipLink>
-        </FadeInOnScroll>
+        </RevealOnScroll>
       </div>
     </section>
   );

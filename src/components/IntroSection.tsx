@@ -1,9 +1,9 @@
 "use client";
 import * as React from 'react';
 import FlipLink from './animations/FlipLink';
-import FadeInOnScroll from './animations/FadeInOnScroll';
+import RevealOnScroll from './animations/RevealOnScroll';
 
-const texts = [
+const specialisingTexts = [
   'specialising in:',
   'digital design',
   'branding',
@@ -26,7 +26,8 @@ export default function IntroSection() {
             />
           </div>
           <div className="col-span-2 flex flex-col justify-center items-start w-full gap-x-[18vw] gap-y-[18vw]">
-            <div
+            <RevealOnScroll
+              type='flip'
               className="flex flex-col font-medium -tracking-wider text-[7vw] leading-[80%]"
             >
               <span>senior digital</span>
@@ -34,7 +35,7 @@ export default function IntroSection() {
               <span>brands communicate</span>
               <span>with their audience in</span>
               <span>a meaningful way</span>
-            </div>
+            </RevealOnScroll>
 
             <div>
                 <FlipLink href="/about" hasBg className="font-medium -tracking-wider text-[2.5vw] leading-[.9] flex">
@@ -43,12 +44,11 @@ export default function IntroSection() {
             </div>
             
 
-            <FadeInOnScroll
-            >
-               {texts.map((text, index) => (
+            <RevealOnScroll triggerOffset='90%'>
+               {specialisingTexts.map((text, index) => (
                 <span key={index} className="block font-medium tracking-[-0.03em] text-[2.5vw] leading-none">{text}</span>
                ))}
-            </FadeInOnScroll>
+            </RevealOnScroll>
           </div>
         </div>
       </section>

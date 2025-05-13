@@ -43,7 +43,7 @@ export default function Home() {
 
       {/* <WorkHeading></WorkHeading> */}
 
-      <FeaturedProjects></FeaturedProjects>
+      {/* <FeaturedProjects></FeaturedProjects> */}
 
       <AboutMeSection></AboutMeSection>
 

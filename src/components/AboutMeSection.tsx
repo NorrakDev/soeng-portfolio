@@ -82,7 +82,7 @@ export default function AboutMeSection() {
         {/* Scrolling DIV overlays texts */}
         <div
           ref={scrollingDivRef}
-          className="absolute bottom-0 left-0 w-1/2 h-full bg-[#c0bfba]"
+          className="absolute bottom-0 left-0 w-1/2 h-full bg-[#c0bfba] overflow-hidden"
         >
           <div className="flex h-full flex-col justify-end p-8 gap-y-24">
             <div className="grid grid-cols-2 gap-x-8">
