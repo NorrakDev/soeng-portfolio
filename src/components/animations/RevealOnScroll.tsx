@@ -3,10 +3,11 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-type AnimationType = 'fade' | 'flip' | 'slide' | 'reveal-up';
+type AnimationType = 'fade' | 'flip' | 'slide' | 'reveal-up' | 'reveal-down';
 
 interface RevealOnScrollProps {
   children: React.ReactNode;
@@ -27,12 +28,12 @@ export default function RevealOnScroll({
 }: RevealOnScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useGSAP(() => {
     const container = containerRef.current;
     if (!container) return;
 
     const targets =
-      type === 'reveal-up'
+      type === 'reveal-up' || type === 'reveal-down'
         ? Array.from(container.querySelectorAll('.reveal-line')) as HTMLElement[]
         : Array.from(container.children) as HTMLElement[];
 
@@ -40,20 +41,24 @@ export default function RevealOnScroll({
       case 'flip':
         gsap.set(targets, {
           opacity: 0,
-          rotationX: -90,
+          rotationX: -100,
+          skewX: 2,
           transformPerspective: 1200,
           transformOrigin: "top center",
         });
         break;
       case 'slide':
-        gsap.set(targets, { y: 30, opacity: 0 });
+        gsap.set(targets, { y: 30, opacity: 0, skewX: 10 });
         break;
       case 'reveal-up':
         gsap.set(targets, { y: '100%' });
         break;
+      case 'reveal-down':
+          gsap.set(targets, { y: '-100%' });
+          break;
       case 'fade':
       default:
-        gsap.set(targets, { opacity: 0 });
+        gsap.set(targets, { opacity: 0, skewY: 7 });
         break;
     }
 
@@ -70,6 +75,7 @@ export default function RevealOnScroll({
         timeline.to(targets, {
           opacity: 1,
           rotationX: 0,
+          skewX: 0,
           duration,
           ease: "power3.out",
         });
@@ -79,11 +85,13 @@ export default function RevealOnScroll({
           y: 0,
           opacity: 1,
           duration,
+          skewX: 0,
           ease: "power4.out",
           stagger,
         });
         break;
       case 'reveal-up':
+      case 'reveal-down':
         timeline.to(targets, {
           y: '0%',
           duration,
@@ -96,16 +104,20 @@ export default function RevealOnScroll({
         timeline.to(targets, {
           opacity: 1,
           duration,
+          skewY: 0,
           ease: "power2.out",
           stagger,
         });
         break;
     }
-  }, [triggerOffset, duration, stagger, type]);
+  }, {
+    scope: containerRef,
+    dependencies: [triggerOffset, duration, stagger, type],
+  });
 
   // Wrap each child for reveal-up
   const wrappedChildren =
-    type === 'reveal-up'
+    type === 'reveal-up' || type === 'reveal-down'
       ? React.Children.map(children, (child, index) => (
           <div key={index} className="overflow-hidden">
             <div className="reveal-line translate-y-full block">{child}</div>

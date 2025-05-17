@@ -3,14 +3,27 @@
 import React, { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from '@gsap/react';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import FlipLink from "../animations/FlipLink";
-
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+import RevealOnScroll from "../animations/RevealOnScroll";
 
 const Footer: React.FC = () => {
   const [timeString, setTimeString] = useState("");
   const footerRef = useRef<HTMLDivElement>(null);
+
+  useGSAP(() => {
+    gsap.set('.footer-container', { yPercent: -50 });
+
+    gsap.to('.footer-container', {
+      yPercent: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: footerRef.current,
+        start: 'top bottom',
+        end: 'top top',
+        scrub: true,
+      },
+    });
+  }, { scope: footerRef });
 
 // Handle the time update logic
   useEffect(() => {
@@ -27,23 +40,6 @@ const Footer: React.FC = () => {
     const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
   }, []);
-
-  // Use useGSAP for GSAP animation
-  useGSAP(() => {
-    gsap.set('.footer-container', { yPercent: -50 });
-
-    gsap.to('.footer-container', {
-      yPercent: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: footerRef.current,
-        start: 'top bottom',
-        end: 'top top',
-        scrub: true,
-      },
-    });
-  }, { scope: footerRef });
-
 
   return (
     <footer ref={footerRef} className="h-[100vh] bg-[#222] text-white relative w-full overflow-hidden">
@@ -97,9 +93,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <div className="w-full mt-20">
+        <RevealOnScroll type="reveal-down" triggerOffset="50%" className="w-full mt-20">
           <img className="w-full" src="/images/sansoengsvg.svg" alt="san soeng" />
-        </div>
+        </RevealOnScroll>
       </section>
     </footer>
 

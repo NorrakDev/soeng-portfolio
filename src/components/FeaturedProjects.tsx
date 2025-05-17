@@ -6,6 +6,8 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from "next/image";
 import RevealOnScroll from "./animations/RevealOnScroll";
+import { projects } from "@/app/data/projects";
+import Link from "next/link";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -15,33 +17,6 @@ type Project = {
   details: string;
   image: string;
 };
-
-const projects: Project[] = [
-  {
-    id: 1,
-    name: "KB Prasac Merchant",
-    details: "ui/ui design, interaction research",
-    image: "/images/kb-prasac.png",
-  },
-  {
-    id: 2,
-    name: "Chip Mong Bank",
-    details: "Introducing the super app for the merchant",
-    image: "/images/chipmong.png",
-  },
-  {
-    id: 3,
-    name: "AEON Mall Plus",
-    details: "Introducing the super app for the merchant",
-    image: "/images/aeon-mall.png",
-  },
-  {
-    id: 4,
-    name: "SAN SOENG Portfolio",
-    details: "Creative Direction, Live Action, Animation",
-    image: "/images/portfolio.png",
-  },
-];
 
 export default function FeaturedProjects() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -86,7 +61,7 @@ export default function FeaturedProjects() {
     preventScroll.disable();
 
     function gotoPanel(index: number, isScrollingDown: boolean) {
-      // When reaching boundaries, disable the observers so normal scroll can resume
+      // Ensure transitions are smooth without abrupt jumps
       if ((index === projects.length && isScrollingDown) || (index === -1 && !isScrollingDown)) {
         intentObserver.disable();
         preventScroll.disable();
@@ -97,7 +72,7 @@ export default function FeaturedProjects() {
       allowScroll = false;
 
       const tl = gsap.timeline({
-        defaults: { duration: .9, ease: "expo.inOut" },
+        defaults: { duration: 1, ease: "expo.inOut" }, // Increase duration for smoother animation
         onComplete: () => {
           // After animation is complete, allow scrolling again
           allowScroll = true;
@@ -112,8 +87,8 @@ export default function FeaturedProjects() {
         .to(mediaItems[index], { yPercent: 0, scale: 1 }, "<")
         .fromTo(titleItems[currentIndex], { opacity: 1 }, { opacity: 0 }, "<")
         .fromTo(titleItems[index], { opacity: 0 }, { opacity: 1 }, "<")
-        .to(detailItems[currentIndex], { opacity: 0, yPercent: 100, delay: .2 }, "<")
-        .fromTo(detailItems[index], { opacity: 0, yPercent: 100 }, { opacity: 1, yPercent: 0, delay: .4, ease: "slow(0.7,0.7,false)" }, "<");
+        .to(detailItems[currentIndex], { opacity: 0, yPercent: 100, delay: .3 }, "<") // Increase delay
+        .fromTo(detailItems[index], { opacity: 0, yPercent: 100 }, { opacity: 1, yPercent: 0, delay: .5, ease: "slow(0.7,0.7,false)" }, "<");
     }
 
     ScrollTrigger.create({
@@ -154,9 +129,9 @@ export default function FeaturedProjects() {
       <div ref={wrapperRef} className="relative h-screen w-full overflow-hidden">
         <div className="media-container flex flex-col justify-start absolute left-0 top-0 w-full h-full">
           {projects.map((project) => (
-            <div key={project.id} className="media-item absolute w-full h-screen left-0 top-0 overflow-hidden">
-              <Image className="w-full h-full object-cover" fill src={project.image} alt={project.name} />
-            </div>
+            <Link key={project.id} scroll href={`/work/${project.slug}`} className="media-item absolute w-full h-screen left-0 top-0 overflow-hidden">
+              <Image className="w-full h-full object-cover" fill src={project.featureImage} alt={project.name} />
+            </Link>
           ))}
         </div>
 
@@ -170,17 +145,16 @@ export default function FeaturedProjects() {
 
         <div className="absolute bottom-0 left-0 w-full z-2">
           {projects.map((project) => (
-            <p key={project.id} className="detail-item text-[#a8a8a8] left-0 bottom-0 absolute px-8 pb-4 text-xl">
-              {project.details}
+            <p key={project.id} className="detail-item text-[#a8a8a8] left-[5%] bottom-0 absolute px-8 pb-4 text-xl text-center">
+              {project.shortDescription}
             </p>
           ))}
         </div>
 
         <div className="absolute bottom-0 left-0 w-full text-center z-2 pb-4 text-xl">
-          <span>View project</span>
+          <Link key={project.id} scroll href={`/work/${project.slug}`}>View project</Link>
         </div>
       </div>
     </section>
-
   );
 }

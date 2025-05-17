@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import ScrollRestoration from '@/components/layout/ScrollRestoration';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,6 +22,8 @@ export default function RootLayout({
       <body>
         {/* Main Content */}
         
+
+        <ScrollRestoration />
         {/* <SmoothScroll> */}
           <Header />
           <main className="content">{children}</main>

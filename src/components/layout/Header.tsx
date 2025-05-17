@@ -7,6 +7,15 @@ import BrandLogo from "../BrandLogo";
 import FlipLink from "../animations/FlipLink";
 import FlipButton from "../animations/FlipButton";
 
+const navigations = [
+  { name: 'home', route: '/' },
+  { name: 'work', route: '/work' },
+  { name: 'about', route: '/about' },
+  { name: 'cv', route: '/' },
+  { name: 'playlist', route: '/' },
+  { name: 'course', route: '/' },
+]
+
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // const lenis = useLenis();
@@ -50,7 +59,7 @@ export default function Header() {
         <BrandLogo />
         <FlipLink href="/archive">+ archive</FlipLink>
 
-        <FlipButton onClick={() => setIsMenuOpen(!isMenuOpen)}>menu</FlipButton>
+        <FlipButton className="cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>menu</FlipButton>
       </nav>
 
       {/* Sidebar Menu (Slides in from Right) */}
@@ -75,17 +84,17 @@ export default function Header() {
               className="fixed top-0 right-0 h-full w-1/5 bg-white z-50 flex flex-col justify-between pt-24 px-8 pb-8"
             >
               <nav className="flex flex-col items-end text-4xl font-bold">
-                {["home", "work", "about", "cv", "playlist", "course"].map((item) => (
+                {navigations.map((item, index) => (
                   <motion.div
-                    key={item}
+                    key={index}
                     initial={{ opacity: 1 }}
-                    animate={{ opacity: hoveredLink && hoveredLink !== item ? 0.5 : 1 }}
+                    animate={{ opacity: hoveredLink && hoveredLink !== item.name ? 0.5 : 1 }}
                     whileHover={{ opacity: 1 }}
                     transition={{ duration: 0.2 }}
-                    onMouseEnter={() => setHoveredLink(item)}
+                    onMouseEnter={() => setHoveredLink(item.name)}
                     onMouseLeave={() => setHoveredLink(null)}
                   >
-                    <FlipLink href={`/${item}`}>{item}</FlipLink>
+                    <FlipLink onClick={() => setIsMenuOpen(!isMenuOpen)} href={`${item.route}`}>{item.name}</FlipLink>
                   </motion.div>
                 ))}
               </nav>
@@ -93,7 +102,7 @@ export default function Header() {
               <div className="grid grid-flow-col grid-rows-3 gap-4 text-lg font-medium">
                 <nav className="row-span-2 flex flex-col items-end">
                 {["linkedin", "telegram", "instagram", "cosmos"].map((social) => (
-                  <FlipLink hasUnderline key={social} href={`/${social}`}>{social}</FlipLink>
+                  <FlipLink onClick={() => setIsMenuOpen(!isMenuOpen)} hasUnderline key={social} href={`/${social}`}>{social}</FlipLink>
                   ))}
                 </nav>
                 <p className="row-span-1 leading-5 text-end">Senior Digital Designer at Pornhub & Onlyfan</p>

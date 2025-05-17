@@ -36,14 +36,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* <WorkHeading></WorkHeading> */}
-
       {/* Intro Section */}
       <IntroSection></IntroSection>
 
-      {/* <WorkHeading></WorkHeading> */}
-
-      {/* <FeaturedProjects></FeaturedProjects> */}
+      <FeaturedProjects></FeaturedProjects>
 
       <AboutMeSection></AboutMeSection>
 
@@ -60,9 +56,7 @@ export default function Home() {
       </div>
 
       <section className="flex flex-col justify-center items-center h-[50vh]">
-        {/* <h2 className="text-6xl font-medium -tracking-wider">get to know me</h2> */}
         <HoverSwapTextLink href="/about" text="Get to know me" hoverText="about me"></HoverSwapTextLink>
-
       </section>
     </>
   );
