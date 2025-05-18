@@ -11,12 +11,16 @@ gsap.registerPlugin(ScrollTrigger, Observer);
 export default function SwipeScroller() {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<Array<HTMLDivElement | null>>([]);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const textWrapperRef = useRef<HTMLDivElement>(null);
+  const nameRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [displayText, setDisplayText] = useState(projects[0]);
+
   const allowScroll = useRef(true);
-  const scrollTimeout = useRef(gsap.delayedCall(1, () => { allowScroll.current = true; }).pause());
+  const scrollTimeout = useRef(
+    gsap.delayedCall(1, () => { allowScroll.current = true; }).pause()
+  );
 
   useEffect(() => {
     const section = containerRef.current;
@@ -50,6 +54,27 @@ export default function SwipeScroller() {
       });
       intentObserver.disable();
 
+      function animateTextTransition(index: number) {
+        const tl = gsap.timeline();
+
+        // fade out name, slide out description down
+        tl.to(nameRef.current, { opacity: 0, duration: 0.3 }, 0);
+        tl.to(descRef.current, { yPercent: 100, opacity: 0, duration: 0.3 }, 0);
+
+        // update content when out animation completes
+        tl.add(() => setDisplayText(projects[index]));
+
+        // prepare new elements: name invisible, desc positioned below
+        tl.set(nameRef.current, { opacity: 0 });
+        tl.set(descRef.current, { yPercent: 100, opacity: 0 });
+
+        // fade in name, slide in description from bottom
+        tl.to(nameRef.current, { opacity: 1, duration: 0.3 });
+        tl.to(descRef.current, { yPercent: 0, opacity: 1, duration: 0.3 });
+
+        return tl;
+      }
+
       function gotoPanel(index: number, down: boolean) {
         if (index < 0 || index >= swipePanels.length) {
           intentObserver.disable();
@@ -62,13 +87,10 @@ export default function SwipeScroller() {
         const currentPanel = swipePanels[currentIndex];
         const nextPanel = swipePanels[index];
 
-        // Animate text fade out
-        gsap.to(textWrapperRef.current, {
-          opacity: 0,
-          duration: 0.3,
-          onComplete: () => setDisplayText(projects[index])
-        });
+        // animate overlay text
+        animateTextTransition(index);
 
+        // panel swipe
         if (down) {
           gsap.set(nextPanel, { yPercent: 100 });
           gsap.to([currentPanel, nextPanel], {
@@ -108,14 +130,6 @@ export default function SwipeScroller() {
     return () => ctx.revert();
   }, [currentIndex]);
 
-  // Animate text fade in when displayText changes
-  useEffect(() => {
-    gsap.to(textWrapperRef.current, {
-      opacity: 1,
-      duration: 0.3
-    });
-  }, [displayText]);
-
   return (
     <div>
       <div ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
@@ -129,13 +143,16 @@ export default function SwipeScroller() {
         ))}
         
         {/* Fixed overlay */}
-        <div 
-          ref={overlayRef}
-          className="absolute bottom-0 z-10 left-0 w-full h-[30vh] bg-background p-8 text-black pointer-events-none"
-        >
-          <div ref={textWrapperRef} className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold">{displayText.name}</h2>
-            <p className="mt-2 text-lg">{displayText.shortDescription}</p>
+        <div className="absolute bottom-0 z-10 left-0 w-full h-[30vh] bg-background p-8 text-black pointer-events-none">
+          <div className="h-full container mx-auto px-8 flex flex-col justify-between">
+            <h2 ref={nameRef} className="text-8xl font-medium">{displayText.name}</h2>
+            <div className="mt-4 grid grid-cols-3 items-center text-center">
+              <p ref={descRef} className="col-span-1 text-xl text-[#a8a8a8]">{displayText.shortDescription}</p>
+              <a target="_blank" rel="noopener noreferrer" className="col-span-1 text-lg underline hover:no-underline">
+                View Project
+              </a>
+              <div className="col-span-1" />
+            </div>
           </div>
         </div>
       </div>
