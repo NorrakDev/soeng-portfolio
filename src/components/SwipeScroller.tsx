@@ -11,7 +11,10 @@ gsap.registerPlugin(ScrollTrigger, Observer);
 export default function SwipeScroller() {
   const containerRef = useRef<HTMLDivElement>(null);
   const panelsRef = useRef<Array<HTMLDivElement | null>>([]);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const textWrapperRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayText, setDisplayText] = useState(projects[0]);
   const allowScroll = useRef(true);
   const scrollTimeout = useRef(gsap.delayedCall(1, () => { allowScroll.current = true; }).pause());
 
@@ -48,15 +51,39 @@ export default function SwipeScroller() {
       intentObserver.disable();
 
       function gotoPanel(index: number, down: boolean) {
-        if ((index === swipePanels.length && down) || (index < 0 && !down)) {
+        if (index < 0 || index >= swipePanels.length) {
           intentObserver.disable();
           return;
         }
+
         allowScroll.current = false;
         scrollTimeout.current.restart(true);
-        const target = down ? swipePanels[currentIndex] : swipePanels[index];
-        gsap.to(target, { yPercent: down ? -100 : 0, duration: 0.75 });
-        setCurrentIndex(index);
+
+        const currentPanel = swipePanels[currentIndex];
+        const nextPanel = swipePanels[index];
+
+        // Animate text fade out
+        gsap.to(textWrapperRef.current, {
+          opacity: 0,
+          duration: 0.3,
+          onComplete: () => setDisplayText(projects[index])
+        });
+
+        if (down) {
+          gsap.set(nextPanel, { yPercent: 100 });
+          gsap.to([currentPanel, nextPanel], {
+            yPercent: (i) => (i === 0 ? -100 : 0),
+            duration: 0.75,
+            onComplete: () => setCurrentIndex(index)
+          });
+        } else {
+          gsap.set(nextPanel, { yPercent: -100 });
+          gsap.to([currentPanel, nextPanel], {
+            yPercent: (i) => (i === 0 ? 100 : 0),
+            duration: 0.75,
+            onComplete: () => setCurrentIndex(index)
+          });
+        }
       }
 
       ScrollTrigger.create({
@@ -81,21 +108,36 @@ export default function SwipeScroller() {
     return () => ctx.revert();
   }, [currentIndex]);
 
+  // Animate text fade in when displayText changes
+  useEffect(() => {
+    gsap.to(textWrapperRef.current, {
+      opacity: 1,
+      duration: 0.3
+    });
+  }, [displayText]);
+
   return (
     <div>
-      {/* Swipe section */}
       <div ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
         {projects.map((project, idx) => (
           <div
             key={project.id}
             ref={(el) => { panelsRef.current[idx] = el; }}
-            className="panel absolute inset-0 flex flex-col justify-end p-8 text-white text-xl bg-cover bg-center"
+            className="panel absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${project.featureImage})` }}
-          >
-            <h2 className="text-3xl font-bold">{project.name}</h2>
-            <p className="mt-2 text-lg">{project.shortDescription}</p>
-          </div>
+          />
         ))}
+        
+        {/* Fixed overlay */}
+        <div 
+          ref={overlayRef}
+          className="absolute bottom-0 z-10 left-0 w-full h-[30vh] bg-background p-8 text-black pointer-events-none"
+        >
+          <div ref={textWrapperRef} className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold">{displayText.name}</h2>
+            <p className="mt-2 text-lg">{displayText.shortDescription}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
