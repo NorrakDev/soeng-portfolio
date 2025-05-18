@@ -5,6 +5,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 import { Observer } from 'gsap/dist/Observer';
 import { projects } from '../app/data/projects';
+import FlipLink from './animations/FlipLink';
+import Link from 'next/link';
 
 gsap.registerPlugin(ScrollTrigger, Observer);
 
@@ -58,19 +60,19 @@ export default function SwipeScroller() {
         const tl = gsap.timeline();
 
         // fade out name, slide out description down
-        tl.to(nameRef.current, { opacity: 0, duration: 0.3 }, 0);
-        tl.to(descRef.current, { yPercent: 100, opacity: 0, duration: 0.3 }, 0);
+        tl.to(nameRef.current, { opacity: 0, duration: 0.3, skewX: 5 }, 0);
+        tl.to(descRef.current, { yPercent: 100, opacity: 0, duration: 0.3, ease: "slow(0.7,0.7,false)"}, 0);
 
         // update content when out animation completes
         tl.add(() => setDisplayText(projects[index]));
 
         // prepare new elements: name invisible, desc positioned below
-        tl.set(nameRef.current, { opacity: 0 });
-        tl.set(descRef.current, { yPercent: 100, opacity: 0 });
+        tl.set(nameRef.current, { opacity: 0, skewX: 5  });
+        tl.set(descRef.current, { yPercent: 100, opacity: 0, ease: "slow(0.7,0.7,false)" });
 
         // fade in name, slide in description from bottom
-        tl.to(nameRef.current, { opacity: 1, duration: 0.3 });
-        tl.to(descRef.current, { yPercent: 0, opacity: 1, duration: 0.3 });
+        tl.to(nameRef.current, { opacity: 1, duration: 0.3, skewX: 0 });
+        tl.to(descRef.current, { yPercent: 0, opacity: 1, duration: 0.3, ease: "slow(0.7,0.7,false)"});
 
         return tl;
       }
@@ -90,18 +92,24 @@ export default function SwipeScroller() {
         // animate overlay text
         animateTextTransition(index);
 
-        // panel swipe
+        /// panel swipe with scale/parallax
         if (down) {
-          gsap.set(nextPanel, { yPercent: 100 });
-          gsap.to([currentPanel, nextPanel], {
-            yPercent: (i) => (i === 0 ? -100 : 0),
+          // start next panel below and slightly scaled down
+          gsap.set(nextPanel, { yPercent: 100, scale: 1.5 });
+          gsap.to(currentPanel, { yPercent: -100, scale: 1, duration: 0.75 });
+          gsap.to(nextPanel, {
+            yPercent: 0,
+            scale: 1,
             duration: 0.75,
             onComplete: () => setCurrentIndex(index)
           });
         } else {
-          gsap.set(nextPanel, { yPercent: -100 });
-          gsap.to([currentPanel, nextPanel], {
-            yPercent: (i) => (i === 0 ? 100 : 0),
+          // start next panel above and slightly scaled down
+          gsap.set(nextPanel, { yPercent: -100, scale: 1.5 });
+          gsap.to(currentPanel, { yPercent: 100, scale: 1, duration: 0.75 });
+          gsap.to(nextPanel, {
+            yPercent: 0,
+            scale: 1,
             duration: 0.75,
             onComplete: () => setCurrentIndex(index)
           });
@@ -143,14 +151,17 @@ export default function SwipeScroller() {
         ))}
         
         {/* Fixed overlay */}
-        <div className="absolute bottom-0 z-10 left-0 w-full h-[30vh] bg-background p-8 text-black pointer-events-none">
+        <div className="absolute bottom-0 z-10 left-0 w-full h-[30vh] bg-background p-8 text-black">
+        
           <div className="h-full container mx-auto px-8 flex flex-col justify-between">
-            <h2 ref={nameRef} className="text-8xl font-medium">{displayText.name}</h2>
+            <h2 ref={nameRef} className="text-8xl font-medium">
+              <Link href={`/work/${displayText.slug}`} className='transition duration-300 hover:underline'>{displayText.name}</Link>
+            </h2>
             <div className="mt-4 grid grid-cols-3 items-center text-center">
               <p ref={descRef} className="col-span-1 text-xl text-[#a8a8a8]">{displayText.shortDescription}</p>
-              <a target="_blank" rel="noopener noreferrer" className="col-span-1 text-lg underline hover:no-underline">
-                View Project
-              </a>
+              <div>
+              <FlipLink href={`/work/${displayText.slug}`} hasUnderline className='text-lg font-medium text-foreground'>View Project</FlipLink>
+              </div>
               <div className="col-span-1" />
             </div>
           </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { motion, HTMLMotionProps } from "framer-motion";
 import clsx from "clsx";

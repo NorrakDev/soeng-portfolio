@@ -58,7 +58,7 @@ export default function RevealOnScroll({
           break;
       case 'fade':
       default:
-        gsap.set(targets, { opacity: 0, skewY: 7 });
+        gsap.set(targets, { opacity: 0, skewX: 5 });
         break;
     }
 
@@ -104,7 +104,7 @@ export default function RevealOnScroll({
         timeline.to(targets, {
           opacity: 1,
           duration,
-          skewY: 0,
+          skewX: 0,
           ease: "power2.out",
           stagger,
         });
