@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import { Observer } from 'gsap/dist/Observer';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Observer } from 'gsap/Observer';
 import { projects } from '../app/data/projects';
 import FlipLink from './animations/FlipLink';
 import Link from 'next/link';
+import RevealOnScroll from './animations/RevealOnScroll';
 
 gsap.registerPlugin(ScrollTrigger, Observer);
 
@@ -36,7 +37,7 @@ export default function SwipeScroller() {
 
       const intentObserver = Observer.create({
         type: 'wheel,touch',
-        tolerance: 10,
+        tolerance: 300,
         preventDefault: true,
         onUp: () => allowScroll.current && gotoPanel(currentIndex - 1, false),
         onDown: () => allowScroll.current && gotoPanel(currentIndex + 1, true),
@@ -116,7 +117,10 @@ export default function SwipeScroller() {
         }
       }
 
+      const lenisContainer = document.querySelector('[data-lenis-container]') as Element;
+
       ScrollTrigger.create({
+        scroller: lenisContainer,
         trigger: section,
         pin: true,
         anticipatePin: 1,
@@ -131,7 +135,9 @@ export default function SwipeScroller() {
           if (intentObserver.isEnabled) return;
           self.scroll(self.end - 1);
           intentObserver.enable();
-        }
+        },
+        onLeave: () => intentObserver.disable(),
+        onLeaveBack: () => intentObserver.disable(),
       });
     }, containerRef);
 
@@ -140,7 +146,11 @@ export default function SwipeScroller() {
 
   return (
     <div>
-      <div ref={containerRef} className="swipe-section relative h-screen w-full overflow-hidden">
+      <RevealOnScroll type='reveal-up' className="w-full text-center py-10">
+        <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%]">works</h1>
+      </RevealOnScroll>
+      
+      <div ref={containerRef} className="swipe-section relative min-h-screen w-full overflow-hidden">
         {projects.map((project, idx) => (
           <div
             key={project.id}
