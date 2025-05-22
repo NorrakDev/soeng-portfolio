@@ -12,7 +12,7 @@ export default function HeroSection() {
     <section className="flex flex-col text-center px-8">
       <div
         ref={ref}
-        className="flex flex-col text-center justify-center items-center min-h-[60vh] py-[10vh]">
+        className="flex flex-col text-center justify-center items-center min-h-[70vh] pt-[15vh]">
         <motion.div
           initial={{ filter: 'blur(20px)', opacity: 0.5 }}
           animate={isInView ? { filter: 'blur(0px)', opacity: 1 } : {}}

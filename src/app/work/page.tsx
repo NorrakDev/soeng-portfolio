@@ -6,6 +6,7 @@ import { projects } from '@/app/data/projects';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Footer from '../../components/layout/Footer';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -58,34 +59,39 @@ export default function Page() {
   }, []);
 
   return (
-    <div ref={containerRef}>
-      <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8">
-        works
-      </h1>
-
-      {projects.map((project) => (
-        <div
-          key={project.id}
-          className="project-item relative h-screen flex items-center justify-center overflow-hidden"
-        >
-          <div
-            className="bg absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${project.featureImage})` }}
-          ></div>
-
-          <div className="overlay absolute top-0 left-0 w-full h-full bg-foreground z-1" />
-
-          <div className="z-10">
-            <HoverSwapTextLink
-              text={project.name}
-              hoverText="view the project"
-              href={`/work/${project.slug}`}
-              transitionType="spring"
-              textColor="white"
-            />
-          </div>
+    <>
+      <div ref={containerRef}>
+        <div className="h-[80vh] flex items-end">
+          <h1 className="text-[25vw] font-medium -tracking-widest leading-[100%] p-8">
+            works
+          </h1>
         </div>
-      ))}
-    </div>
+
+        {projects.map((project) => (
+          <div
+            key={project.id}
+            className="project-item relative h-screen flex items-center justify-center overflow-hidden"
+          >
+            <div
+              className="bg absolute top-0 left-0 w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: `url(${project.featureImage})` }}
+            ></div>
+
+            <div className="overlay absolute top-0 left-0 w-full h-full bg-foreground z-1" />
+
+            <div className="z-10">
+              <HoverSwapTextLink
+                text={project.name}
+                hoverText="view the project"
+                href={`/work/${project.slug}`}
+                transitionType="spring"
+                textColor="white"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <Footer />
+    </>
   );
 }

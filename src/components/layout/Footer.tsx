@@ -93,7 +93,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
 
-        <RevealOnScroll type="reveal-down" triggerOffset="50%" className="w-full mt-20">
+        <RevealOnScroll type="reveal-down" className="w-full mt-20">
           <img className="w-full" src="/images/sansoengsvg.svg" alt="san soeng" />
         </RevealOnScroll>
       </section>

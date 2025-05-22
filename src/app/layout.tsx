@@ -1,10 +1,17 @@
-import { ReactLenis } from 'lenis/react'
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SmoothScroll from "@/components/layout/SmoothScroll";
-import ScrollRestoration from '@/components/layout/ScrollRestoration';
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { LoadingProvider } from "../components/common/LoadingContext";
+import LoadingOverlay from "../components/animations/LoadingOverlay";
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother, useGSAP);
+}
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,17 +25,15 @@ export default function RootLayout({
 }>) {
 
   return (
-    <html lang="en">
-      <body>
-        {/* Main Content */}
-        
-
-        <ScrollRestoration />
-        {/* <SmoothScroll> */}
+    <html lang="en" className="is-loading">
+      <body>        
+      <LoadingProvider>
+          <LoadingOverlay />
           <Header />
-          <main className="content">{children}</main>
-          <Footer /> 
-        {/* </SmoothScroll> */}
+          <SmoothScroll>
+            <main className="content">{children}</main>
+          </SmoothScroll>
+        </LoadingProvider>
       </body>
     </html>
   );

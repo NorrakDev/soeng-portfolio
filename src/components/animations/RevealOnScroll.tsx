@@ -66,7 +66,7 @@ export default function RevealOnScroll({
       scrollTrigger: {
         trigger: container,
         start: `top ${triggerOffset}`,
-        toggleActions: "restart none none none",
+        toggleActions: "play none none none",
       },
     });
 

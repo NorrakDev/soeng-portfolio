@@ -8,15 +8,9 @@ import Image from "next/image";
 import RevealOnScroll from "./animations/RevealOnScroll";
 import { projects } from "@/app/data/projects";
 import Link from "next/link";
+import { Observer } from "gsap/Observer";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
-
-type Project = {
-  id: number;
-  name: string;
-  details: string;
-  image: string;
-};
+gsap.registerPlugin(useGSAP, ScrollTrigger, Observer);
 
 export default function FeaturedProjects() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -145,14 +139,18 @@ export default function FeaturedProjects() {
 
         <div className="absolute bottom-0 left-0 w-full z-2">
           {projects.map((project) => (
-            <p key={project.id} className="detail-item text-[#a8a8a8] left-[5%] bottom-0 absolute px-8 pb-4 text-xl text-center">
+            <div key={project.id}>
+               <p className="detail-item text-[#a8a8a8] left-[5%] bottom-0 absolute px-8 pb-4 text-xl text-center">
               {project.shortDescription}
-            </p>
+              </p>
+              <Link scroll href={`/work/${project.slug}`}>View project</Link>
+            </div>
+           
           ))}
         </div>
 
         <div className="absolute bottom-0 left-0 w-full text-center z-2 pb-4 text-xl">
-          <Link key={project.id} scroll href={`/work/${project.slug}`}>View project</Link>
+          
         </div>
       </div>
     </section>

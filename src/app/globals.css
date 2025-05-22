@@ -67,7 +67,11 @@
 
 html {
   font-family: "TT Hoves Pro Trial";
+}
 
+/* Prevent scroll during initial load */
+html.is-loading {
+  overflow: hidden;
 }
 
 /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
@@ -88,23 +92,11 @@ body {
   @apply -tracking-wide;
 }
 
-.content {
-  position: relative;
-  /* transition: transform 0.3s ease, opacity 0.3s ease; */
+#smooth-wrapper {
+  transition: transform 0.5s ease, opacity 0.5s ease;
 }
 
-.content.menu-open {
-  @apply opacity-50;
-  transition: opacity 0.3s ease;
-  /* @apply opacity-50 translate-x-[-17%] scale-100;
-  transition: transform 0.3s ease, opacity 0.3s ease; */
-}
-
-.word-reveal {
-  display: inline-block;
-  background-image: linear-gradient(to right, #000 0%, #d1d5db 0%);
-  background-size: 200% 100%;
-  background-position-x: 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+#smooth-wrapper.menu-open {
+  transform: translateX(-17%);
+  opacity: 0.5;
 }

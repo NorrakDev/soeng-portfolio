@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-// import { useLenis } from 'lenis/react'
 import BrandLogo from "../BrandLogo";
 import FlipLink from "../animations/FlipLink";
 import FlipButton from "../animations/FlipButton";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 
 const navigations = [
   { name: 'home', route: '/' },
@@ -18,44 +18,36 @@ const navigations = [
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const lenis = useLenis();
 
   useEffect(() => {
-    const mainElement = document.querySelector(".content");
+    const smoother = ScrollSmoother.get();
+    const wrapper = document.querySelector("#smooth-wrapper");
 
     // Toggle the 'menu-open' class on the element with class 'content'
-    if (mainElement) {
+    if (wrapper) {
       if (isMenuOpen) {
-        mainElement.classList.add("menu-open");
+        smoother?.paused(true);
+        wrapper.classList.add("menu-open");
       } else {
-        mainElement.classList.remove("menu-open");
+        smoother?.paused(false);
+        wrapper.classList.remove("menu-open");
       }
     }
 
     return () => {
-      if (mainElement) {
-        mainElement.classList.remove("menu-open");
+      smoother?.paused(false);
+      if (wrapper) {
+        wrapper.classList.remove("menu-open");
       }
     };
   }, [isMenuOpen]);
-
-  // useEffect(() => {
-  //   if (isMenuOpen) {
-  //     lenis?.stop(); // Pause Lenis scrolling
-  //   } else {
-  //     lenis?.start(); // Resume Lenis scrolling
-  //   }
-  //   return () => {
-  //     lenis?.start();
-  //   };
-  // }, [isMenuOpen, lenis]);
 
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
 
   return (
     <>
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 w-full flex justify-between items-center my-4 px-8 text-xl font-medium z-8000 mix-blend-exclusion text-white">
+      <nav className="fixed top-0 left-0 w-full flex justify-between items-center my-4 px-8 text-2xl font-medium z-8000 mix-blend-exclusion text-white">
         <BrandLogo />
         <FlipLink href="/archive">+ archive</FlipLink>
 
@@ -69,9 +61,9 @@ export default function Header() {
             {/* Background Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
+              animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-transparent z-40"
+              className="fixed inset-0 z-40 bg-yellow-100/10 mix-blend-multiply pointer-events-auto"
               onClick={() => setIsMenuOpen(false)}
             />
 
@@ -81,7 +73,7 @@ export default function Header() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
-              className="fixed top-0 right-0 h-full w-1/5 bg-white z-50 flex flex-col justify-between pt-24 px-8 pb-8"
+              className="fixed top-0 right-0 h-full w-1/5 bg-white z-50 flex flex-col justify-between pt-24 px-8 pb-8 shadow-2xl"
             >
               <nav className="flex flex-col items-end text-4xl font-bold">
                 {navigations.map((item, index) => (

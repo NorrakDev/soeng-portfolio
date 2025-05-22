@@ -5,6 +5,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useEffect, useRef } from 'react';
 import RevealOnScroll from '@/components/animations/RevealOnScroll';
+import Footer from '../../components/layout/Footer';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -45,8 +46,8 @@ export default function Page() {
   return (
     <div>
 
-      <div className="h-[60vh] flex items-end">
-        <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%] p-8">
+      <div className="h-[80vh] flex items-end">
+        <h1 className="text-[25vw] font-medium -tracking-widest leading-[100%] p-8">
           about
         </h1>
       </div>
@@ -241,6 +242,8 @@ export default function Page() {
           </div>
         </div>
       </section>
+
+      <Footer />
     </div>
   );
 }

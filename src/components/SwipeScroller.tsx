@@ -37,8 +37,8 @@ export default function SwipeScroller() {
 
       const intentObserver = Observer.create({
         type: 'wheel,touch',
-        tolerance: 300,
-        preventDefault: true,
+        tolerance: 100,
+        preventDefault: false,
         onUp: () => allowScroll.current && gotoPanel(currentIndex - 1, false),
         onDown: () => allowScroll.current && gotoPanel(currentIndex + 1, true),
         onEnable(self) {
@@ -97,30 +97,27 @@ export default function SwipeScroller() {
         if (down) {
           // start next panel below and slightly scaled down
           gsap.set(nextPanel, { yPercent: 100, scale: 1.5 });
-          gsap.to(currentPanel, { yPercent: -100, scale: 1, duration: 0.75 });
+          gsap.to(currentPanel, { yPercent: -100, scale: 1, duration: 0.6 });
           gsap.to(nextPanel, {
             yPercent: 0,
             scale: 1,
-            duration: 0.75,
+            duration: 0.6,
             onComplete: () => setCurrentIndex(index)
           });
         } else {
           // start next panel above and slightly scaled down
           gsap.set(nextPanel, { yPercent: -100, scale: 1.5 });
-          gsap.to(currentPanel, { yPercent: 100, scale: 1, duration: 0.75 });
+          gsap.to(currentPanel, { yPercent: 100, scale: 1, duration: 0.6 });
           gsap.to(nextPanel, {
             yPercent: 0,
             scale: 1,
-            duration: 0.75,
+            duration: 0.6,
             onComplete: () => setCurrentIndex(index)
           });
         }
       }
 
-      const lenisContainer = document.querySelector('[data-lenis-container]') as Element;
-
       ScrollTrigger.create({
-        scroller: lenisContainer,
         trigger: section,
         pin: true,
         anticipatePin: 1,
@@ -136,8 +133,6 @@ export default function SwipeScroller() {
           self.scroll(self.end - 1);
           intentObserver.enable();
         },
-        onLeave: () => intentObserver.disable(),
-        onLeaveBack: () => intentObserver.disable(),
       });
     }, containerRef);
 
@@ -165,7 +160,7 @@ export default function SwipeScroller() {
         
           <div className="h-full container mx-auto px-8 flex flex-col justify-between">
             <h2 ref={nameRef} className="text-8xl font-medium">
-              <Link href={`/work/${displayText.slug}`} className='transition duration-300 hover:underline'>{displayText.name}</Link>
+              <Link scroll href={`/work/${displayText.slug}`} className='transition duration-300 hover:underline'>{displayText.name}</Link>
             </h2>
             <div className="mt-4 grid grid-cols-3 items-center text-center">
               <p ref={descRef} className="col-span-1 text-xl text-[#a8a8a8]">{displayText.shortDescription}</p>
