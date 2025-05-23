@@ -48,7 +48,7 @@ export default function SwipeScroller() {
           restoreScroll = () => self.scrollY(saved);
           document.addEventListener('scroll', restoreScroll, { passive: false });
         },
-        onDisable(self) {
+        onDisable() {
           if (restoreScroll) {
             document.removeEventListener('scroll', restoreScroll);
             restoreScroll = null;

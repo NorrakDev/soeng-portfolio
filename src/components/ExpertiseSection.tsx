@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import RevealOnScroll from "./animations/RevealOnScroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -37,7 +37,7 @@ export default function ExpertiseSection() {
       <div className="relative min-h-screen w-full flex flex-row p-8 pt-24">
         <div ref={stickyRef} className="basis-1/2 flex flex-col justify-start items-center">
           <RevealOnScroll className="text-2xl -tracking-wider">
-            <p>let's work together</p>
+            <p>let&apos;s work together</p>
             <p><a
               className="underline hover:opacity-50"
               href="mailto:sansoen16@gmail.com"

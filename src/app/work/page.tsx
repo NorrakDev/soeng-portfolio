@@ -14,7 +14,7 @@ export default function Page() {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    let getRatio = (el: HTMLElement) =>
+    const getRatio = (el: HTMLElement) =>
       window.innerHeight / (window.innerHeight + el.offsetHeight);
 
     gsap.utils.toArray<HTMLElement>('.project-item').forEach((project, i) => {

@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { useGSAP } from '@gsap/react';
 import FlipLink from "../animations/FlipLink";
 import RevealOnScroll from "../animations/RevealOnScroll";
+import Link from "next/link";
 
 const Footer: React.FC = () => {
   const [timeString, setTimeString] = useState("");
@@ -45,10 +46,10 @@ const Footer: React.FC = () => {
     <footer ref={footerRef} className="h-[100vh] bg-[#222] text-white relative w-full overflow-hidden">
       <section className="footer-container px-8 py-10 flex flex-col justify-center items-center h-[100vh]">
         <div className="grid grid-cols-2 grid-rows-1 w-full">
-          <h3 className="text-2xl -tracking-wider">currently i'm available for <br /> freelance projects</h3>
+          <h3 className="text-2xl -tracking-wider">currently i&apos;m available for <br /> freelance projects</h3>
           <div className="flex flex-col text-5xl -tracking-wider">
             <h2>say hi,</h2>
-            <a className="opacity-50 underline" href="mailto:sansoeng16@gmail.com">sansoeng16@gmail.com</a>
+            <Link className="opacity-50 underline" href="mailto:sansoeng16@gmail.com">sansoeng16@gmail.com</Link>
           </div>
         </div>
 

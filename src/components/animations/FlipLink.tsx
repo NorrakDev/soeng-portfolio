@@ -1,40 +1,52 @@
 "use client";
 
-import Link from "next/link";
-import { motion, HTMLMotionProps } from "framer-motion";
+import Link, { LinkProps } from "next/link";
+import { motion } from "framer-motion";
 import clsx from "clsx";
+import React from "react";
 
-interface FlipLinkProps extends Omit<HTMLMotionProps<"a">, "ref"> {
-  href: string;
-  children: string; // Ensure children is always a string
+interface FlipLinkProps extends LinkProps {
+  /** Text or elements to display */
+  children: React.ReactNode;
+  /** Additional CSS classes for motion wrapper */
+  className?: string;
+  /** Enable background highlight on hover */
   hasBg?: boolean;
+  /** Show an underline animation on hover */
   hasUnderline?: boolean;
 }
 
-const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = false, hasUnderline = false, ...props }) => {
+const FlipLink: React.FC<FlipLinkProps> = ({
+  children,
+  className,
+  hasBg = false,
+  hasUnderline = false,
+  ...linkProps
+}) => {
   const duration = 0.2;
   const stagger = 0.02;
-  const text = String(children); // Ensures children is treated as a string
+  const text = String(children);
 
   return (
-    <Link href={href} scroll passHref legacyBehavior>
-      <motion.a
+    <Link {...linkProps} scroll>
+      <motion.div
         initial="initial"
         whileHover="hovered"
         className={clsx(
-          hasBg && "bg-background p-[.5vw] hover:bg-[#f0e9e4] hover:scale-110 hover:origin-left", // Only apply scale and origin-left when hasBg is true
-          "group transform transition-transform relative inline-block", // Ensure the link is inline-block to position the underline correctly
+          hasBg &&
+            "bg-background p-[.5vw] hover:bg-[#f0e9e4] hover:scale-110 hover:origin-left",
+          "group transform transition-transform relative inline-block cursor-pointer",
           className
         )}
-
-        {...(props as HTMLMotionProps<"a">)}
+        role="link"
+        tabIndex={0}
       >
         <div className="relative block overflow-hidden whitespace-nowrap">
           {/* Top Layer */}
           <div>
             {text.split("").map((letter, index) => (
               <motion.span
-                key={index}
+                key={`top-${index}`}
                 variants={{
                   initial: { y: 0 },
                   hovered: { y: "-100%" },
@@ -46,7 +58,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
                 }}
                 className="inline-block"
               >
-                {letter === " " ? "\u00A0" : letter} {/* Non-breaking space for better spacing */}
+                {letter === " " ? "\u00A0" : letter}
               </motion.span>
             ))}
           </div>
@@ -55,7 +67,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
           <div className="absolute inset-0">
             {text.split("").map((letter, index) => (
               <motion.span
-                key={index}
+                key={`bottom-${index}`}
                 variants={{
                   initial: { y: "100%" },
                   hovered: { y: 0 },
@@ -67,19 +79,17 @@ const FlipLink: React.FC<FlipLinkProps> = ({ children, href, className, hasBg = 
                 }}
                 className="inline-block"
               >
-                {letter === " " ? "\u00A0" : letter} {/* Non-breaking space for better spacing */}
+                {letter === " " ? "\u00A0" : letter}
               </motion.span>
             ))}
           </div>
 
-          {/* Conditionally render the underline */}
+          {/* Underline */}
           {hasUnderline && (
-            <div
-              className="absolute bottom-0 right-0 w-full h-[2px] bg-current group-hover:w-0 transition-all duration-300 ease-in-out"
-            />
+            <div className="absolute bottom-0 right-0 w-full h-[2px] bg-current group-hover:w-0 transition-all duration-300 ease-in-out" />
           )}
         </div>
-      </motion.a>
+      </motion.div>
     </Link>
   );
 };

@@ -1,10 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useEffect } from "react";
-
 import AboutMeSection from "@/components/AboutMeSection";
-import FeaturedProjects from "@/components/FeaturedProjects";
 import HeroSection from "@/components/HeroSection";
 import IntroSection from "@/components/IntroSection";
 import ExpertiseSection from "@/components/ExpertiseSection";
@@ -13,15 +9,6 @@ import SwipeScroller from "../components/SwipeScroller";
 import Footer from "../components/layout/Footer";
 
 export default function Home() {
-  useEffect( () => {
-    (
-      async () => {
-          // const LocomotiveScroll = (await import('locomotive-scroll')).default
-          // const locomotiveScroll = new LocomotiveScroll();
-      }
-    )()
-  }, [])
-
   return (
     <>
       {/* Hero Section with Scroll-based Animations */}

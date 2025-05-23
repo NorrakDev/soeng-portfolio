@@ -3,7 +3,7 @@
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import RevealOnScroll from '@/components/animations/RevealOnScroll';
 import Footer from '../../components/layout/Footer';
 
@@ -223,7 +223,7 @@ export default function Page() {
             </RevealOnScroll>
             <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
               <p className="text-[2.5vw] font-normal -tracking-wider leading-tight text-center">
-              I'm varied in my approach<br />of creating
+              I&apos;m varied in my approach<br />of creating
               </p>
             </div>
             <div className="min-h-screen flex flex-col justify-center items-center my-[20vh]">
