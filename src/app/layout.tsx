@@ -7,6 +7,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { LoadingProvider } from "../components/common/LoadingContext";
 import LoadingOverlay from "../components/animations/LoadingOverlay";
+import ClientLayoutWrapper from "../components/layout/ClientLayoutWrapper";
+
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother, useGSAP);
@@ -26,11 +28,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="is-loading">
       <body>        
-      <LoadingProvider>
+        <LoadingProvider>
           <LoadingOverlay />
           <Header />
           <SmoothScroll>
-            <main className="content">{children}</main>
+            <ClientLayoutWrapper>
+              {children}
+            </ClientLayoutWrapper>
           </SmoothScroll>
         </LoadingProvider>
       </body>

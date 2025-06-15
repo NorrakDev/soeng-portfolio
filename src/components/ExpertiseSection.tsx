@@ -4,6 +4,11 @@ import { useRef } from "react";
 import RevealOnScroll from "./animations/RevealOnScroll";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const expertises = [
   'ui design, ux design',
@@ -30,7 +35,7 @@ export default function ExpertiseSection() {
       pinSpacing: false,
       pinType: 'transform'
     });
-  }, []); 
+  }); 
 
   return (
     <section className="relative w-full mt-[10vw] mb-[14vw]">

@@ -43,9 +43,9 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer ref={footerRef} className="h-[100vh] bg-[#222] text-white relative w-full overflow-hidden">
-      <section className="footer-container px-8 py-10 flex flex-col justify-center items-center h-[100vh]">
-        <div className="grid grid-cols-2 grid-rows-1 w-full">
+    <footer ref={footerRef} className="h-screen bg-[#222] text-white relative w-full overflow-hidden">
+      <section className="footer-container p-8 flex flex-col justify-end items-center h-screen">
+        <div className="grid grid-cols-2 grid-rows-1 w-full gap-8">
           <h3 className="text-2xl -tracking-wider">currently i&apos;m available for <br /> freelance projects</h3>
           <div className="flex flex-col text-5xl -tracking-wider">
             <h2>say hi,</h2>
@@ -54,12 +54,12 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="w-full flex flex-col gap-y-4 my-8">
-          {[...Array(9)].map((_, index) => (
+          {[...Array(4)].map((_, index) => (
             <hr key={index} className="w-full h-[1px] bg-[#cdcdcd] opacity-40" />
           ))}
         </div>
 
-        <div className="grid grid-cols-6 grid-rows-1 gap-4 text-xl w-full">
+        <div className="grid grid-cols-6 grid-rows-1 gap-8 text-xl w-full">
           <nav className="col-span-3 flex flex-col items-start">
             {["home", "work", "about", "cv"].map((item) => (
               <FlipLink key={item} href={`/${item}`}>{item}</FlipLink>
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
 
         <hr className="w-full h-[1px] bg-[#cdcdcd] opacity-40 my-8" />
 
-        <div className="grid grid-cols-6 grid-rows-1 gap-4 text-2xl -tracking-wider w-full">
+        <div className="grid grid-cols-6 grid-rows-1 gap-8 text-2xl -tracking-wider w-full">
           <p className="col-span-3 flex flex-col justify-end opacity-50">© SAN SOENG 2025</p>
           <div className="col-span-2 flex flex-col items-start">
             <p className="opacity-50">Phnom Penh, Cambodia</p>

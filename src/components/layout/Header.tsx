@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import BrandLogo from "../BrandLogo";
 import FlipLink from "../animations/FlipLink";
 import FlipButton from "../animations/FlipButton";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
+import { useIsomorphicLayoutEffect } from "../../helpers/isomorphicEffect";
 
 const navigations = [
   { name: 'home', route: '/' },
@@ -19,7 +20,7 @@ const navigations = [
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const smoother = ScrollSmoother.get();
     const wrapper = document.querySelector("#smooth-wrapper");
 
@@ -47,11 +48,13 @@ export default function Header() {
   return (
     <>
       {/* Top Navigation Bar */}
-      <nav className="fixed top-0 left-0 w-full flex justify-between items-center my-4 px-8 text-2xl font-medium z-8000 mix-blend-exclusion text-white">
+      <nav className="fixed top-0 left-0 w-full grid grid-cols-2 gap-8 my-4 px-8 text-2xl font-medium z-8000 mix-blend-exclusion text-white">
         <BrandLogo />
-        <FlipLink href="/archive">+ archive</FlipLink>
+        <div className="flex justify-between">
+          <FlipLink href="/archive">+ archive</FlipLink>
 
-        <FlipButton className="cursor-pointer" onClick={() => setIsMenuOpen(!isMenuOpen)}>menu</FlipButton>
+          <FlipButton onClick={() => setIsMenuOpen(!isMenuOpen)} >menu</FlipButton>
+        </div>
       </nav>
 
       {/* Sidebar Menu (Slides in from Right) */}

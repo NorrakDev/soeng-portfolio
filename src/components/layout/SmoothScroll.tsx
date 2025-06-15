@@ -1,14 +1,15 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { useGSAP } from '@gsap/react';
 import { useLoadingContext } from '../common/LoadingContext';
 import { usePathname } from 'next/navigation';
+import { useIsomorphicLayoutEffect } from '../../helpers/isomorphicEffect';
 
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother, useGSAP);
+gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollSmoother);
 
 interface SmoothScrollProps {
   children: React.ReactNode;
@@ -21,29 +22,14 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
   const contentRef = useRef<HTMLDivElement>(null);
   const smootherRef = useRef<ScrollSmoother | null>(null);
 
-  // Handle scroll reset on route changes
-  useEffect(() => {
-    if (smootherRef.current) {
-      // Immediate scroll to top
-      smootherRef.current.scrollTop(0);
-      // Refresh the ScrollSmoother instance
-      smootherRef.current.refresh();
-    }
-  }, [pathname]);
-
   useGSAP(() => {
     if (!wrapperRef.current || !contentRef.current) return;
-
-    // Kill existing instance if exists
-    if (smootherRef.current) {
-      smootherRef.current.kill();
-    }
 
     // Create new smoother instance
     smootherRef.current = ScrollSmoother.create({
       wrapper: wrapperRef.current,
       content: contentRef.current,
-      smooth: 1.2,
+      smooth: 2,
       smoothTouch: 0.1,
       effects: true,
       normalizeScroll: true,
@@ -51,14 +37,16 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
     });
 
     setLoaded(true);
+  }, { dependencies: [pathname] });
 
-    // Cleanup on unmount
-    return () => {
-      if (smootherRef.current) {
-        smootherRef.current.kill();
-      }
-    };
-  }, { scope: wrapperRef });
+  useIsomorphicLayoutEffect(() => {
+    // Scroll to top on route change
+    if (smootherRef.current) {
+      smootherRef.current.scrollTo(0, false); // no animation
+    } else {
+      window.scrollTo({ top: 0, behavior: 'auto' }); // Fallback
+    }
+  }, [pathname]);
 
   return (
     <div id='smooth-wrapper' ref={wrapperRef}>

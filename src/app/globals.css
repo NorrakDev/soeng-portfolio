@@ -70,9 +70,9 @@ html {
 }
 
 /* Prevent scroll during initial load */
-html.is-loading {
+/* html.is-loading {
   overflow: hidden;
-}
+} */
 
 /* Hide scrollbar for Webkit browsers (Chrome, Safari) */
 html::-webkit-scrollbar {
@@ -83,6 +83,9 @@ body {
   color: var(--foreground);
   /* background-color: var(--background); */
   background-color: #ffffff;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
   scrollbar-width: none;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;

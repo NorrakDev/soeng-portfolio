@@ -141,8 +141,8 @@ export default function SwipeScroller() {
 
   return (
     <div>
-      <RevealOnScroll type='reveal-up' className="w-full text-center py-10">
-        <h1 className="text-[20vw] font-medium -tracking-widest leading-[100%]">works</h1>
+      <RevealOnScroll className="w-full text-center pb-10">
+        <h1 className="text-[25vw] font-medium -tracking-widest leading-[100%]">works</h1>
       </RevealOnScroll>
       
       <div ref={containerRef} className="swipe-section relative min-h-screen w-full overflow-hidden">

@@ -5,7 +5,9 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const texts = [
   'I design products that help you ',
@@ -24,7 +26,7 @@ export default function AboutMeSection() {
     const container = aboutContainerRef.current;
     const scrollDiv1 = scrollingDivRef.current;
     const scrollDiv2 = scrollingDivRef2.current;
-    if (!container || !scrollDiv1 || !scrollDiv2) return;
+    // if (!container || !scrollDiv1 || !scrollDiv2) return;
 
     // Initially position scrolling divs offscreen bottom
     gsap.set(scrollDiv1, { yPercent: 100 });
@@ -50,17 +52,17 @@ export default function AboutMeSection() {
     });
     tl.to(textRefs.current, { opacity: 1 }, texts.length);
 
-    // Move first scrolling div up
-    tl.to(scrollDiv1, { yPercent: 0, ease: 'none', duration: 1 });
-    tl.to({}, { duration: 0.3 });
-    // Move second scrolling div up after first is pinned
-    tl.to(scrollDiv2, { yPercent: 0, ease: 'none', duration: 1 });
+    // // Move first scrolling div up
+    // tl.to(scrollDiv1, { yPercent: 0, ease: 'none', duration: 1 });
+    // tl.to({}, { duration: 0.3 });
+    // // Move second scrolling div up after first is pinned
+    // tl.to(scrollDiv2, { yPercent: 0, ease: 'none', duration: 1 });
 
     tl.to({}, { duration: 0.7 });
   }, []);
 
   return (
-    <section className="relative w-full overflow-hidden bg-[#d0d0d0]">
+    <section className="relative w-full overflow-hidden">
       <div
         ref={aboutContainerRef}
         className="relative h-screen w-full overflow-hidden"
@@ -79,8 +81,7 @@ export default function AboutMeSection() {
           </div>
         </div>
 
-        {/* Scrolling DIV overlays texts */}
-        <div
+        {/* <div
           ref={scrollingDivRef}
           className="absolute bottom-0 left-0 w-1/2 h-full bg-[#c0bfba] overflow-hidden"
         >
@@ -119,7 +120,6 @@ export default function AboutMeSection() {
             <div className="bg-[#9a9ca0] p-8 overflow-hidden
                       [mask-image:radial-gradient(circle_at_top_center,transparent_24px,black_25px)]">
 
-              {/* Content */}
               <h2 className="text-3xl font-medium -tracking-wider leading-[110%] pt-20 pb-12 text-center">
                 My approach is rooted in a set of guiding principles that ensure the best outcome for every project:
               </h2>
@@ -143,7 +143,7 @@ export default function AboutMeSection() {
           </div>
 
 
-        </div>
+        </div> */}
       </div>
     </section>
   );

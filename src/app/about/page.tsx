@@ -7,7 +7,9 @@ import { useRef } from 'react';
 import RevealOnScroll from '@/components/animations/RevealOnScroll';
 import Footer from '../../components/layout/Footer';
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 const imageLayout = [
   { src: "https://picsum.photos/400/300?random=1", colStart: 1, colSpan: 3, rowStart: 1, rowSpan: 2 },
