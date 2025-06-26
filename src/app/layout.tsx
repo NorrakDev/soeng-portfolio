@@ -5,8 +5,8 @@ import SmoothScroll from "@/components/layout/SmoothScroll";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollSmoother } from "gsap/ScrollSmoother";
-import { LoadingProvider } from "../components/common/LoadingContext";
-import LoadingOverlay from "../components/animations/LoadingOverlay";
+// import { LoadingProvider } from "../components/common/LoadingContext";
+// import LoadingOverlay from "../components/animations/LoadingOverlay";
 import ClientLayoutWrapper from "../components/layout/ClientLayoutWrapper";
 import TransitionCurtain from "../components/animations/PageTransition";
 

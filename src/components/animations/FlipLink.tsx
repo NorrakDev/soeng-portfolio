@@ -1,6 +1,6 @@
 "use client";
 
-import Link, { LinkProps } from "next/link";
+import { LinkProps } from "next/link";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import React from "react";

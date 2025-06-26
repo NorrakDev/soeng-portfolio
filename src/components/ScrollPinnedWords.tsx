@@ -62,7 +62,7 @@ export default function ScrollPinnedWords({ leftText, words }: ScrollPinnedWords
         {words.map((word, i) => (
           <div
             key={i}
-            ref={(el) => (wordRefs.current[i] = el)}
+            ref={el => (wordRefs.current[i] = el, undefined)}
             className="text-[12vw] font-medium -tracking-widest leading-[95%]"
           >
             {word}

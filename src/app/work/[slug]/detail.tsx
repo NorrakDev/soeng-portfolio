@@ -340,10 +340,10 @@ export default function WorkDetailPage({ slug }: { slug: string }) {
         <div className="w-full my-32">
           <div className="container mx-auto w-full px-8 flex flex-row justify-center items-end">
             <div className="basis-1/2">
-              <img className="w-3/5 h-auto object-contain" src="/images/prasac/mockup-1.jpg" />
+              <img className="w-3/5 h-auto object-contain" src="/images/prasac/mockup-1.jpg" alt="mockup-1" />
             </div>
             <div className="basis-1/2">
-              <img className="w-full h-auto object-contain" src="/images/prasac/mockup-2.jpg" />
+              <img className="w-full h-auto object-contain" src="/images/prasac/mockup-2.jpg" alt="mockup-2" />
             </div>
           </div>
         </div>
@@ -355,16 +355,16 @@ export default function WorkDetailPage({ slug }: { slug: string }) {
         <div className="w-full my-32">
           <div className="container mx-auto w-full px-8 flex flex-row justify-center items-end">
             <div className="relative basis-1/2">
-              <img className="w-full h-auto object-contain" src="/images/prasac/mockup-3.jpg" />
+              <img className="w-full h-auto object-contain" src="/images/prasac/mockup-3.jpg" alt="mockup-3" />
             </div>
             <div className="relative basis-1/2 flex flex-col justify-end items-end">
-              <img className="w-3/5 h-auto object-contain" src="/images/prasac/mockup-4.jpg" />
+              <img className="w-3/5 h-auto object-contain" src="/images/prasac/mockup-4.jpg" alt="mockup-4" />
             </div>
           </div>
         </div>
 
         <div className="w-full my-32">
-          <img className="w-full h-auto object-contain" src="/images/prasac/mockup-5.jpg" />
+          <img className="w-full h-auto object-contain" src="/images/prasac/mockup-5.jpg" alt="mockup-5" />
         </div>
 
         <div className="w-full px-8">

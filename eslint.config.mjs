@@ -11,6 +11,14 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Override rules here:
+  {
+    rules: {
+      // Disable the rule that forbids raw <img> tags
+      "@next/next/no-img-element": "off",
+    },
+  },
 ];
 
 export default eslintConfig;
