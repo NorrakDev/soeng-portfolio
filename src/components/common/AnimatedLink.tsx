@@ -1,41 +1,87 @@
-// components/common/AnimatedLink.tsx
 'use client';
 
-import NextLink, { LinkProps } from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MouseEvent, ReactNode } from 'react';
-import { useLoadingContext } from './LoadingContext';
+import { useRef } from 'react';
 import { gsap } from 'gsap';
 
-interface AnimatedLinkProps extends LinkProps {
-  children: ReactNode;
-}
+type TransitionLinkProps = LinkProps & {
+  className?: string;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+};
 
-export function AnimatedLink({ href, children, ...props }: AnimatedLinkProps) {
+export default function TransitionLink({
+  href,
+  onClick,
+  className,
+  ...rest
+}: TransitionLinkProps) {
   const router = useRouter();
-  const { setLoaded } = useLoadingContext();
+  const isAnimating = useRef(false);
 
-  const handleClick = (e: MouseEvent) => {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (onClick) onClick(e);
+
+    if (
+      isAnimating.current ||
+      e.defaultPrevented ||
+      e.button !== 0 ||
+      e.metaKey ||
+      e.ctrlKey ||
+      e.shiftKey ||
+      e.altKey
+    ) return;
+
     e.preventDefault();
-    // 1) trigger exit: show overlay + fade old page out
-    setLoaded(false);
-    gsap.to('.page-content', {
-      opacity: 0,
-      y: -30,
-      duration: 10,      // slower!
-      ease: 'power2.inOut',
-      delay: 100,
+    isAnimating.current = true;
+
+    const currentPath = window.location.pathname;
+    const targetPath = href.toString();
+    const columns = document.querySelectorAll<HTMLDivElement>('.curtain-column');
+    const message = document.querySelector<HTMLDivElement>('.transition-message');
+
+    // ✅ Fade in the message before curtain closes
+    if (message) {
+      gsap.to(message, {
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power2.out',
+      });
+    }
+
+    if (!columns.length) {
+      if (currentPath === targetPath) {
+        window.location.reload();
+      } else {
+        router.push(targetPath);
+      }
+      return;
+    }
+
+    gsap.set(columns, { y: '-100%' });
+
+    gsap.to(columns, {
+      y: '0%',
+      duration: 0.8,
+      ease: 'power4.inOut',
+      stagger: 0.1,
       onComplete: () => {
-        // 2) once exit done, navigate
-        // note: href is string | URL; cast to string if needed
-        router.push(typeof href === 'string' ? href : href.toString());
+        if (currentPath === targetPath) {
+          window.location.reload();
+        } else {
+          router.push(targetPath);
+        }
+        isAnimating.current = false;
       },
     });
   };
 
   return (
-    <NextLink href={href} onClick={handleClick} {...props}>
-      {children}
-    </NextLink>
+    <Link
+      href={href}
+      onClick={handleClick}
+      className={className}
+      {...rest}
+    />
   );
 }

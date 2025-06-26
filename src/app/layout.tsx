@@ -8,6 +8,7 @@ import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { LoadingProvider } from "../components/common/LoadingContext";
 import LoadingOverlay from "../components/animations/LoadingOverlay";
 import ClientLayoutWrapper from "../components/layout/ClientLayoutWrapper";
+import TransitionCurtain from "../components/animations/PageTransition";
 
 
 if (typeof window !== 'undefined') {
@@ -28,15 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="is-loading">
       <body>        
-        <LoadingProvider>
-          <LoadingOverlay />
+        {/* <LoadingProvider> */}
+          <TransitionCurtain/>
+          {/* <LoadingOverlay /> */}
           <Header />
           <SmoothScroll>
             <ClientLayoutWrapper>
               {children}
             </ClientLayoutWrapper>
           </SmoothScroll>
-        </LoadingProvider>
+        {/* </LoadingProvider> */}
       </body>
     </html>
   );

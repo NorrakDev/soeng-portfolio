@@ -14,72 +14,91 @@ const imageUrls = Array.from(
 );
 
 export default function ScrollWaterImages() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const imagesWrapperRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const scrubRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const section = sectionRef.current!;
-    const imagesWrapper = imagesWrapperRef.current!;
+    const container = containerRef.current!;
+    const scrubWrap = scrubRef.current!;
+    const bgText = textRef.current!;
     const vh = window.innerHeight;
-    const imagesHeight = imagesWrapper.scrollHeight;
+    const scrollH = scrubWrap.scrollHeight;
+    const distance = scrollH - vh + vh * 0.2;
 
-    const pinDuration = imagesHeight - vh + vh * 0.2;
+    // 1) give the container the right height
+    container.style.height = `${vh + distance}px`;
 
+    // 2) pin & scrub the images
     gsap.fromTo(
-      imagesWrapper,
+      scrubWrap,
       { y: vh },
       {
-        y: vh - imagesHeight,
+        y: vh - scrollH,
         ease: 'none',
         scrollTrigger: {
-          trigger: section,
+          trigger: container,
           start: 'top top',
-          end: `+=${pinDuration}`,
+          end: `+=${distance}`,
           scrub: true,
-          pin: true,
+          pin: scrubWrap,
+          pinSpacing: false,
         },
       }
     );
 
-    // Apply skew effect to each image
-    gsap.utils.toArray('.image').forEach((image) => {
+    // 3) pin the background text in the exact same window‐scroll span
+    ScrollTrigger.create({
+      trigger: container,
+      start: 'top top',
+      end: `+=${distance}`,
+      pin: bgText,
+      pinSpacing: false,
+    });
+
+    // 4) skew effect (unchanged)
+    gsap.utils.toArray<HTMLImageElement>('.image').forEach((img) => {
       ScrollTrigger.create({
-        trigger: image,
+        trigger: img,
         start: 'top bottom',
         end: 'bottom top',
         scrub: true,
         onUpdate({ getVelocity }) {
           gsap.fromTo(
-            image,
+            img,
             { skewY: `${getVelocity() / 200}deg` },
             { skewY: 0 }
           );
         },
       });
     });
-  }, { scope: sectionRef });
+  }, { scope: containerRef });
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full h-screen bg-black text-white overflow-hidden"
+    <div
+      ref={containerRef}
+      className="relative w-full bg-black text-white overflow-hidden"
     >
-      {/* Text behind images */}
-      <div className="absolute inset-0 flex items-center justify-center z-0 pointer-events-none">
+      {/* 1. Background text now has a ref */}
+      <div
+        ref={textRef}
+        className="absolute top-0 left-0 w-full h-screen flex items-center justify-center z-0 pointer-events-none"
+      >
         <p className="text-[2.5vw] font-medium -tracking-wider leading-tight text-center">
           with a bit of design that look like
         </p>
       </div>
 
-      {/* Images on top */}
+      {/* 2. Images wrapper (scrub‐pinned) */}
       <div
-        ref={imagesWrapperRef}
-        className="absolute top-0 left-0 w-full flex flex-col gap-10 px-6 py-20 z-10 items-center"
+        ref={scrubRef}
+        className="relative top-0 w-full flex flex-col gap-10 px-6 py-20 items-center z-10"
       >
         {imageUrls.map((url, i) => (
           <div
             key={i}
-            className={`w-3/4 flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}
+            className={`w-3/4 flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'
+              }`}
           >
             <div className="max-w-[600px] w-full">
               <Image
@@ -88,12 +107,12 @@ export default function ScrollWaterImages() {
                 width={600}
                 height={450}
                 className="image rounded-lg object-cover shadow-lg"
-                priority={true}
+                priority
               />
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

@@ -1,52 +1,68 @@
-// components/common/PageTransition.tsx
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
-import { useLoadingContext } from '../common/LoadingContext';
 
-interface PageTransitionProps {
-  children: ReactNode;
-}
+const COLUMN_COUNT = 6;
 
-export default function PageTransition({ children }: PageTransitionProps) {
-  const { setLoaded } = useLoadingContext();
+export default function TransitionCurtain() {
+  const curtainRef = useRef<HTMLDivElement>(null);
+  const messageRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
-  // EXIT animation: runs when this component is about to unmount
   useEffect(() => {
-    return () => {
-      // show the overlay
-      setLoaded(false);
-      // fade out page-content
-      gsap.to('.page-content', {
-        opacity: 0,
-        y: -30,
-        duration: 0.4,
-        ease: 'power2.inOut',
-      });
-    };
-  }, [pathname, setLoaded]);
+    if (!curtainRef.current) return;
 
-  // ENTER animation: runs on mount (i.e. new page)
-  useEffect(() => {
-    // first make sure overlay is up, then once smoother sets loaded=true it’ll hide
-    // and we animate in
-    gsap.fromTo(
-      '.page-content',
-      { opacity: 0, y: 30 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-        onStart: () => {
-          // we’ll rely on your SmoothScroll’s setLoaded(true) to hide the overlay
-        },
-      }
-    );
+    const columns = curtainRef.current.querySelectorAll<HTMLDivElement>('.curtain-column');
+    const message = messageRef.current;
+
+    if (!columns.length || !message) return;
+
+    const tl = gsap.timeline();
+
+    tl.to(columns, {
+      y: '-100%',
+      duration: 0.8,
+      ease: 'power4.inOut',
+      stagger: 0.1,
+    }, 0) // start immediately
+    .to(message, {
+      opacity: 0,
+      duration: 0.3,
+      ease: 'power2.out',
+    }, 0.4); // fade out while curtain is opening
   }, [pathname]);
 
-  return <div className="page-content">{children}</div>;
+  return (
+    <div
+      ref={curtainRef}
+      className="transition-curtain fixed inset-0 z-[99999] pointer-events-none flex"
+      style={{ overflow: 'hidden' }}
+    >
+      {/* Message is visible by default */}
+      <div
+        ref={messageRef}
+        className="transition-message absolute inset-0 flex items-center justify-center text-white text-lg font-semibold pointer-events-none"
+        style={{
+          opacity: 1, // ✅ show immediately
+          zIndex: 1,
+        }}
+      >
+        [transition in progress]
+      </div>
+
+      {[...Array(COLUMN_COUNT)].map((_, i) => (
+        <div
+          key={i}
+          className="curtain-column bg-black"
+          style={{
+            flex: 1,
+            height: '100vh',
+            transform: 'translateY(0%)', // ✅ visible immediately
+          }}
+        />
+      ))}
+    </div>
+  );
 }

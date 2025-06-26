@@ -4,6 +4,7 @@ import Link, { LinkProps } from "next/link";
 import { motion } from "framer-motion";
 import clsx from "clsx";
 import React from "react";
+import TransitionLink from "../common/AnimatedLink";
 
 interface FlipLinkProps extends LinkProps {
   /** Text or elements to display */
@@ -28,7 +29,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({
   const text = String(children);
 
   return (
-    <Link {...linkProps}>
+    <TransitionLink {...linkProps}>
       <motion.div
         initial="initial"
         whileHover="hovered"
@@ -90,7 +91,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({
           )}
         </div>
       </motion.div>
-    </Link>
+    </TransitionLink>
   );
 };
 
