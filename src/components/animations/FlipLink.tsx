@@ -28,7 +28,7 @@ const FlipLink: React.FC<FlipLinkProps> = ({
   const text = String(children);
 
   return (
-    <Link {...linkProps} scroll>
+    <Link {...linkProps}>
       <motion.div
         initial="initial"
         whileHover="hovered"

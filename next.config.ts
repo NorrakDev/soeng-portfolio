@@ -1,12 +1,20 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    remotePatterns: [new URL('https://media0.giphy.com/media/**')],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'media0.giphy.com',
+        pathname: '/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        pathname: '/**', // allow any path
+      },
+    ],
   },
-  // output: 'export', // Enables static export
-  // basePath: process.env.NODE_ENV === 'production' ? '/soeng-portfolio' : '',
 };
 
 export default nextConfig;
