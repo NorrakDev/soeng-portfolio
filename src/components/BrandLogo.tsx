@@ -1,9 +1,9 @@
-import Link from "next/link";
+import TransitionLink from "./common/AnimatedLink";
 
 export default function BrandLogo() {
     return (
-      <Link href={'/'} scroll className="inline-block text-5xl font-bold">
+      <TransitionLink href={'/'} scroll className="inline-block text-5xl font-bold">
         SG<sup className="text-xs align-super">®</sup>
-      </Link>
+      </TransitionLink>
     );
   }

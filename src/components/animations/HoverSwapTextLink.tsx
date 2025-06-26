@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import clsx from "clsx";
+import TransitionLink from "../common/AnimatedLink";
 
 const CUBIC_EASING = [0.34, 1.56, 0.64, 1]; // bounce ease
 // const CUBIC_EASING = [0.05, 0.9, 0.1, 1]; // sassy swoosh
@@ -88,7 +88,7 @@ export default function HoverSwapTextLink({
   }, [isHovered, text, hoverText]);
 
   return (
-    <Link href={href} scroll={true} className="inline-block">
+    <TransitionLink href={href} scroll={true} className="inline-block">
       <div
         className="inline-flex flex-col items-center cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
@@ -148,6 +148,6 @@ export default function HoverSwapTextLink({
           transition={TRANSITION}
         />
       </div>
-    </Link>
+    </TransitionLink>
   );
 }

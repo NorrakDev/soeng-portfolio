@@ -1,19 +1,21 @@
 'use client';
 
+import React, { ReactNode, useRef } from 'react';
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useRef } from 'react';
 import { gsap } from 'gsap';
 
 type TransitionLinkProps = LinkProps & {
   className?: string;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+  children?: ReactNode;  // <-- Add here
 };
 
 export default function TransitionLink({
   href,
   onClick,
   className,
+  children,
   ...rest
 }: TransitionLinkProps) {
   const router = useRouter();
@@ -30,7 +32,8 @@ export default function TransitionLink({
       e.ctrlKey ||
       e.shiftKey ||
       e.altKey
-    ) return;
+    )
+      return;
 
     e.preventDefault();
     isAnimating.current = true;
@@ -40,7 +43,6 @@ export default function TransitionLink({
     const columns = document.querySelectorAll<HTMLDivElement>('.curtain-column');
     const message = document.querySelector<HTMLDivElement>('.transition-message');
 
-    // ✅ Fade in the message before curtain closes
     if (message) {
       gsap.to(message, {
         opacity: 1,
@@ -77,11 +79,8 @@ export default function TransitionLink({
   };
 
   return (
-    <Link
-      href={href}
-      onClick={handleClick}
-      className={className}
-      {...rest}
-    />
+    <Link href={href} onClick={handleClick} className={className} {...rest}>
+      {children}
+    </Link>
   );
 }
